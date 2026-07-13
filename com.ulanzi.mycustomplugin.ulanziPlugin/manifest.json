@@ -16,7 +16,14 @@
       "Encoder": {
         "layout": "layout.json"
       },
-      "PropertyInspectorPath": "property-inspector/inspector.html"
+      "PropertyInspectorPath": "property-inspector/inspector.html",
+      "state": 0,
+      "States": [
+        {
+          "Name": "Line In Control",
+          "Image": "assets/icon.png"
+        }
+      ]
     }
   ],
   "OS": [

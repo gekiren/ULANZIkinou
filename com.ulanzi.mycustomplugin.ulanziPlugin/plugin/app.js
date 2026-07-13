@@ -48,7 +48,7 @@ async function getDevices() {
 async function getVolume(device) {
   try {
     const output = await runPowerShell(`-Action GetVolume -DeviceName "${device}"`);
-    const val = parseFloat(output);
+    const val = parseFloat(output.trim());
     return val >= 0 ? Math.round(val * 100) : 50;
   } catch (err) {
     console.error(`[AudioControl] Failed to get volume for ${device}:`, err);
@@ -66,7 +66,7 @@ async function setVolume(device, vol) {
 async function getMute(device) {
   try {
     const output = await runPowerShell(`-Action GetMute -DeviceName "${device}"`);
-    return output === '1';
+    return output.trim() === '1';
   } catch (err) {
     console.error(`[AudioControl] Failed to get mute state for ${device}:`, err);
     return false;
@@ -152,8 +152,8 @@ $UD.onConnected(async () => {
 // アクション追加時
 $UD.onAdd(async (jsn) => {
   const context = jsn.context;
-  console.log("[app.js] Action added:", context);
-  
+  console.log(`[app.js] Action added: ${context}`);
+
   if (!SETTINGS_CACHE[context]) {
     SETTINGS_CACHE[context] = {
       device: "default",
@@ -162,13 +162,6 @@ $UD.onAdd(async (jsn) => {
       currentMute: false
     };
   }
-
-  // 設定情報があれば反映
-  if (jsn.param) {
-    if (jsn.param.device) SETTINGS_CACHE[context].device = jsn.param.device;
-    if (jsn.param.step) SETTINGS_CACHE[context].step = parseInt(jsn.param.step) || 5;
-  }
-
   await syncFromSystem(context);
 });
 

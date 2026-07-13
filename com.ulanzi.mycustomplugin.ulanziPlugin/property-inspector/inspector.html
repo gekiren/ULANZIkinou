@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="../../libs/css/uspi.css">
+  <link rel="stylesheet" href="../libs/css/uspi.css">
   <style>
     /* Premium Styling */
     body {
@@ -90,11 +90,11 @@
       100% { transform: scale(0.8); opacity: 0.5; }
     }
   </style>
-  <script src="../../libs/js/constants.js"></script>
-  <script src="../../libs/js/eventEmitter.js"></script>
-  <script src="../../libs/js/timers.js"></script>
-  <script src="../../libs/js/utils.js"></script>
-  <script src="../../libs/js/ulanziApi.js"></script>
+  <script src="../libs/js/constants.js"></script>
+  <script src="../libs/js/eventEmitter.js"></script>
+  <script src="../libs/js/timers.js"></script>
+  <script src="../libs/js/utils.js"></script>
+  <script src="../libs/js/ulanziApi.js"></script>
 </head>
 <body>
   <div class="uspi-wrapper">
@@ -139,6 +139,11 @@
 
     let savedDevice = "default";
 
+    $UD.onConnected(() => {
+      console.log("[PropertyInspector] Connected to websocket");
+      requestDevices();
+    });
+
     $UD.onAdd((message) => {
       console.log("[PropertyInspector] Action added, param:", message.param);
       if (message.param) {
@@ -164,6 +169,7 @@
           stepSelect.value = message.param.step;
         }
       }
+      requestDevices();
     });
 
     $UD.onSendToPropertyInspector((message) => {

@@ -46,8 +46,8 @@ interface IAudioEndpointVolume {
     int j();
     int GetMasterVolumeLevelScalar(out float pfLevel);
     int k(); int l(); int m(); int n();
-    int SetMute(bool bMute, Guid pguidEventContext);
-    int GetMute(out bool pbMute);
+    int SetMute([MarshalAs(UnmanagedType.Bool)] bool bMute, Guid pguidEventContext);
+    int GetMute([MarshalAs(UnmanagedType.Bool)] out bool pbMute);
 }
 
 [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

@@ -54,7 +54,11 @@ export default class UlanziNodeApi extends EventEmitter {
           }));
         }
 
-        this.emit(msg.cmd, msg);
+        let cmd = msg.cmd;
+        if (cmd === 'daildown') cmd = 'dialdown';
+        if (cmd === 'dailup') cmd = 'dialup';
+
+        this.emit(cmd, msg);
       } catch (err) {
         console.error(`[UlanziNodeApi] Error parsing message:`, err);
       }
