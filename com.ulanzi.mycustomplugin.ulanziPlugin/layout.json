@@ -26,7 +26,7 @@
       "type": "text",
       "key": "title",
       "background": "transparent",
-      "enabled": true,
+      "enabled": false,
       "rect": [0, 95, 126, 30],
       "zOrder": 3,
       "alignment": "center",

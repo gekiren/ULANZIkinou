@@ -1,7 +1,7 @@
-import WebSocket from 'ws';
-import EventEmitter from 'events';
+const WebSocket = require('ws');
+const EventEmitter = require('events');
 
-export default class UlanziNodeApi extends EventEmitter {
+class UlanziNodeApi extends EventEmitter {
   constructor() {
     super();
     this.websocket = null;
@@ -131,3 +131,4 @@ export default class UlanziNodeApi extends EventEmitter {
   onSendToPlugin(fn) { this.on('sendToPlugin', fn); }
   onParamFromApp(fn) { this.on('paramfromapp', fn); }
 }
+module.exports = UlanziNodeApi;

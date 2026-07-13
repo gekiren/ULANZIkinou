@@ -1,12 +1,13 @@
-import UlanziNodeApi from './libs/ulanziNodeApi.js';
-import { exec } from 'child_process';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
+const UlanziNodeApi = require('./libs/ulanziNodeApi.js');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// 起動確認デバッグログ
+const logPath = path.join(__dirname, 'debug.log');
+fs.appendFileSync(logPath, `[${new Date().toISOString()}] Plugin main process started.\n`);
+
 const scriptPath = path.join(__dirname, 'libs', 'audioControl.ps1');
-
 const $UD = new UlanziNodeApi();
 
 // 各アクションインスタンスの設定キャッシュ
