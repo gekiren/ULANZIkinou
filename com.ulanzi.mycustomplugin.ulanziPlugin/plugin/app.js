@@ -1,12 +1,27 @@
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
+
+// console.log / console.error のログファイルを自動書き出し
+const logStream = fs.createWriteStream(path.join(__dirname, 'debug.log'), { flags: 'a' });
+const originalLog = console.log;
+const originalError = console.error;
+
+console.log = function (...args) {
+  const msg = `[LOG] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  logStream.write(msg);
+  originalLog.apply(console, args);
+};
+
+console.error = function (...args) {
+  const msg = `[ERR] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  logStream.write(msg);
+  originalError.apply(console, args);
+};
+
+console.log("Plugin debug log system initialized. argv:", process.argv);
+
 const UlanziNodeApi = require('./libs/ulanziNodeApi.js');
-
-// 起動確認デバッグログ
-const logPath = path.join(__dirname, 'debug.log');
-fs.appendFileSync(logPath, `[${new Date().toISOString()}] Plugin main process started.\n`);
-
 const scriptPath = path.join(__dirname, 'libs', 'audioControl.ps1');
 const $UD = new UlanziNodeApi();
 
@@ -231,7 +246,15 @@ $UD.onSendToPlugin(async (jsn) => {
 // 上位機側からパラメータ同期（Property Inspector読み込み時など）
 $UD.onParamFromApp(async (jsn) => {
   const context = jsn.context;
-  if (!SETTINGS_CACHE[context]) return;
+  if (!SETTINGS_CACHE[context]) {
+    console.log(`[app.js] Cache not found in onParamFromApp. Initializing cache for ${context}`);
+    SETTINGS_CACHE[context] = {
+      device: "default",
+      step: 5,
+      currentVolume: 50,
+      currentMute: false
+    };
+  }
 
   if (jsn.param) {
     if (jsn.param.device) SETTINGS_CACHE[context].device = jsn.param.device;
