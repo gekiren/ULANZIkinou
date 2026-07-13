@@ -123,9 +123,6 @@ class UlanziNodeApi extends EventEmitter {
   setBaseDataIcon(context, base64Data, text) {
     const parts = context.split('___');
     this.send('state', {
-      uuid: parts[0],
-      key: parts[1],
-      actionid: parts[2],
       param: {
         statelist: [{
           uuid: parts[0],
@@ -143,9 +140,6 @@ class UlanziNodeApi extends EventEmitter {
   setPathIcon(context, filePath, text) {
     const parts = context.split('___');
     this.send('state', {
-      uuid: parts[0],
-      key: parts[1],
-      actionid: parts[2],
       param: {
         statelist: [{
           uuid: parts[0],
