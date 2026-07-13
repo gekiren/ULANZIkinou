@@ -146,11 +146,8 @@ async function updateDialUI(context) {
 
   console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${volText}, Mute=${config.currentMute}`);
   
-  // レイアウトに存在するキーのみを送信し、画像は Base64 形式で転送する
-  $UD.setFeedback({
-    "mic_icon": iconData,
-    "volume_text": volText
-  }, context);
+  // SDK公式プロトコル（state コマンド）でアイコンとテキストを一括更新
+  $UD.setBaseDataIcon(context, iconData, volText);
 }
 
 // OSから最新状態を取得してキャッシュを更新しUIに反映する

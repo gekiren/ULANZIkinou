@@ -3,7 +3,7 @@
   "items": [
     {
       "type": "pixmap",
-      "key": "mic_icon",
+      "key": "icon",
       "background": "transparent",
       "enabled": true,
       "rect": [23, 10, 80, 80],
@@ -12,7 +12,7 @@
     },
     {
       "type": "text",
-      "key": "volume_text",
+      "key": "title",
       "background": "transparent",
       "enabled": true,
       "rect": [0, 105, 126, 30],

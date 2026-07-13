@@ -120,6 +120,46 @@ class UlanziNodeApi extends EventEmitter {
     });
   }
 
+  setBaseDataIcon(context, base64Data, text) {
+    const parts = context.split('___');
+    this.send('state', {
+      uuid: parts[0],
+      key: parts[1],
+      actionid: parts[2],
+      param: {
+        statelist: [{
+          uuid: parts[0],
+          key: parts[1],
+          actionid: parts[2],
+          type: 1,
+          data: base64Data,
+          textData: text || "",
+          showtext: text ? true : false,
+        }]
+      }
+    });
+  }
+
+  setPathIcon(context, filePath, text) {
+    const parts = context.split('___');
+    this.send('state', {
+      uuid: parts[0],
+      key: parts[1],
+      actionid: parts[2],
+      param: {
+        statelist: [{
+          uuid: parts[0],
+          key: parts[1],
+          actionid: parts[2],
+          type: 2,
+          path: filePath,
+          textData: text || "",
+          showtext: text ? true : false,
+        }]
+      }
+    });
+  }
+
   onConnected(fn) { this.on('connected', fn); }
   onAdd(fn) { this.on('add', fn); }
   onRun(fn) { this.on('run', fn); }
