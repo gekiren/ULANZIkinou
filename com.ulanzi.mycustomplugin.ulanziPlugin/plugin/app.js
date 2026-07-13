@@ -2,22 +2,37 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-// console.log / console.error のログファイルを自動書き出し
-const logStream = fs.createWriteStream(path.join(__dirname, 'debug.log'), { flags: 'a' });
+const logPath = path.join(__dirname, 'debug.log');
+
 const originalLog = console.log;
 const originalError = console.error;
 
 console.log = function (...args) {
   const msg = `[LOG] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
-  logStream.write(msg);
+  try {
+    fs.appendFileSync(logPath, msg);
+  } catch (e) {}
   originalLog.apply(console, args);
 };
 
 console.error = function (...args) {
   const msg = `[ERR] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
-  logStream.write(msg);
+  try {
+    fs.appendFileSync(logPath, msg);
+  } catch (e) {}
   originalError.apply(console, args);
 };
+
+// 未受託の例外とPromise拒否をキャッチして強制ログ出力する
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
 
 console.log("Plugin debug log system initialized. argv:", process.argv);
 
