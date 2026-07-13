@@ -168,23 +168,49 @@ async function updateDialUI(context) {
   }, context);
 }
 
+const syncQueue = {};
+
 // OSから最新状態を取得してキャッシュを更新しUIに反映する
 async function syncFromSystem(context) {
-  const config = SETTINGS_CACHE[context];
-  if (!config) return;
+  if (syncQueue[context]) {
+    // すでに実行中の同期処理がある場合は完了を待ち、未処理の要求が1つだけ待機するようにする
+    if (syncQueue[context].pending) return;
+    syncQueue[context].pending = true;
+    await syncQueue[context].promise;
+  }
 
-  const device = config.device || "default";
-  
-  // システムの現在値を取得
-  const [vol, mute] = await Promise.all([
-    getVolume(device),
-    getMute(device)
-  ]);
+  let resolvePromise;
+  const promise = new Promise((resolve) => {
+    resolvePromise = resolve;
+  });
 
-  config.currentVolume = vol;
-  config.currentMute = mute;
+  syncQueue[context] = {
+    promise,
+    pending: false
+  };
 
-  await updateDialUI(context);
+  try {
+    const config = SETTINGS_CACHE[context];
+    if (config) {
+      const device = config.device || "default";
+      
+      // PowerShell C#コンパイル時のファイルロック競合を防ぐため、並行ではなく順次実行する
+      const vol = await getVolume(device);
+      const mute = await getMute(device);
+
+      config.currentVolume = vol;
+      config.currentMute = mute;
+
+      await updateDialUI(context);
+    }
+  } catch (err) {
+    console.error(`[AudioControl] Failed to sync state from system for ${context}:`, err);
+  } finally {
+    resolvePromise();
+    if (syncQueue[context] && !syncQueue[context].pending) {
+      delete syncQueue[context];
+    }
+  }
 }
 
 // Ulanzi Studio 接続開始
