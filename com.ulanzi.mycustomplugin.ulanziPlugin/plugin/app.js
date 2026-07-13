@@ -136,7 +136,7 @@ async function updateDialUI(context) {
   $UD.setFeedback({
     "mic_icon": iconPath,
     "volume_text": volText,
-    "title": deviceLabel
+    "title": ""
   }, context);
 }
 

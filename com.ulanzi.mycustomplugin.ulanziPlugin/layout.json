@@ -6,7 +6,7 @@
       "key": "mic_icon",
       "background": "transparent",
       "enabled": true,
-      "rect": [38, 5, 50, 50],
+      "rect": [23, 10, 80, 80],
       "zOrder": 1,
       "value": "assets/mic_on.png"
     },
@@ -15,24 +15,12 @@
       "key": "volume_text",
       "background": "transparent",
       "enabled": true,
-      "rect": [0, 60, 126, 30],
+      "rect": [0, 105, 126, 30],
       "zOrder": 2,
       "alignment": "center",
       "color": "#ffffff",
-      "font": { "size": 10, "weight": 500 },
+      "font": { "size": 9, "weight": 500 },
       "text": "50%"
-    },
-    {
-      "type": "text",
-      "key": "title",
-      "background": "transparent",
-      "enabled": false,
-      "rect": [0, 95, 126, 30],
-      "zOrder": 3,
-      "alignment": "center",
-      "color": "#aaaaaa",
-      "font": { "size": 8 },
-      "text": "Line In"
     }
   ]
 }
