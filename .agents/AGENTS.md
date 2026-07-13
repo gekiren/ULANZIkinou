@@ -11,3 +11,5 @@
 - **絶対パスの禁止**: プラグイン内部のコードで絶対パス（`C:\Users\...`）をハードコードすることは厳禁です。必ずプラグインルートからの相対パスで記述します。
 - **SDKの適用**: コピーした `libs/` 内の共通ライブラリを適切に使用してください。
 - **検証**: 動作確認は `KOUSIKI/UlanziDeckPlugin-SDK-main/UlanziDeckSimulator` を使用して行います。
+- **実機プラグインフォルダの場所**: 実機検証や配置の際は、必ず以下の公式プラグインフォルダ（Windows環境）を使用してください：
+  - `C:\Users\toshi\AppData\Roaming\Ulanzi\UlanziDeck\Plugins`
