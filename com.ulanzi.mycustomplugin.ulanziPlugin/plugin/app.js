@@ -19,8 +19,11 @@ let cachedDevices = [];
 // PowerShell実行ラッパー
 function runPowerShell(args) {
   return new Promise((resolve, reject) => {
-    // UTF-8エンコーディングを明示
-    const command = `powershell -NoProfile -ExecutionPolicy Bypass -File "${scriptPath}" ${args}`;
+    // Windows のシステムフォルダから powershell.exe の絶対パスを安全に解決
+    const system32 = process.env.SystemRoot ? path.join(process.env.SystemRoot, 'System32') : 'C:\\Windows\\System32';
+    const powershellPath = path.join(system32, 'WindowsPowerShell', 'v1.0', 'powershell.exe');
+
+    const command = `"${powershellPath}" -NoProfile -ExecutionPolicy Bypass -File "${scriptPath}" ${args}`;
     exec(command, { encoding: 'utf8' }, (error, stdout, stderr) => {
       if (error) {
         reject(error);
