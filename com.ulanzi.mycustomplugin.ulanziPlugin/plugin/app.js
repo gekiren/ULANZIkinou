@@ -181,6 +181,36 @@ $UD.onAdd(async (jsn) => {
       currentMute: false
     };
   }
+
+  // 能動的に設定（デバイス名など）を要求する
+  $UD.send('getSettings', {
+    uuid: jsn.uuid,
+    key: jsn.key,
+    actionid: jsn.actionid
+  });
+
+  await syncFromSystem(context);
+});
+
+// アプリから設定データを受信したとき
+$UD.on('didReceiveSettings', async (jsn) => {
+  const context = `${jsn.uuid}___${jsn.key}___${jsn.actionid}`;
+  console.log(`[app.js] Received settings via didReceiveSettings for ${context}:`, jsn.settings);
+
+  if (!SETTINGS_CACHE[context]) {
+    SETTINGS_CACHE[context] = {
+      device: "default",
+      step: 5,
+      currentVolume: 50,
+      currentMute: false
+    };
+  }
+
+  if (jsn.settings) {
+    if (jsn.settings.device) SETTINGS_CACHE[context].device = jsn.settings.device;
+    if (jsn.settings.step) SETTINGS_CACHE[context].step = parseInt(jsn.settings.step) || 5;
+  }
+
   await syncFromSystem(context);
 });
 
