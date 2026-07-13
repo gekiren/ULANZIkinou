@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../../libs/css/uspi.css">
+  <style>
+    /* Premium Styling */
+    body {
+      background: #12131C;
+      color: #E2E8F0;
+      font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+    
+    .uspi-wrapper {
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94A3B8;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-select, .form-input {
+      width: 100%;
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #F8FAFC;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease-in-out;
+      box-sizing: border-box;
+    }
+
+    .form-select:focus, .form-input:focus {
+      border-color: #10B981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+
+    .info-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 20px;
+      font-size: 11px;
+      color: #A7F3D0;
+      line-height: 1.5;
+    }
+
+    .info-box-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Subtle loading animation */
+    .loading-pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      animation: pulse 1.5s infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.5; }
+    }
+  </style>
+  <script src="../../libs/js/constants.js"></script>
+  <script src="../../libs/js/eventEmitter.js"></script>
+  <script src="../../libs/js/timers.js"></script>
+  <script src="../../libs/js/utils.js"></script>
+  <script src="../../libs/js/ulanziApi.js"></script>
+</head>
+<body>
+  <div class="uspi-wrapper">
+    <form id="property-inspector">
+      
+      <div class="form-group">
+        <label class="form-label" data-localize="Select Audio Device">Select Audio Device</label>
+        <select class="form-select" id="device-select" name="device">
+          <option value="default" data-localize="Select Device">Loading devices...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" data-localize="Volume Change Step">Volume Change Step</label>
+        <select class="form-select" id="step-select" name="step">
+          <option value="1">1%</option>
+          <option value="2">2%</option>
+          <option value="5" selected>5%</option>
+          <option value="10">10%</option>
+          <option value="20">20%</option>
+        </select>
+      </div>
+
+    </form>
+
+    <div class="info-box">
+      <div class="info-box-title">
+        <span class="loading-pulse" id="loading-indicator"></span>
+        <span data-localize="Line In Control">Line In Control</span>
+      </div>
+      <div data-localize="Description Text">Rotate knob to change volume, click to toggle mute state.</div>
+    </div>
+  </div>
+
+  <script>
+    $UD.connect('com.ulanzi.ulanzistudio.lineincontrol.control');
+
+    const deviceSelect = document.getElementById('device-select');
+    const stepSelect = document.getElementById('step-select');
+    const form = document.getElementById('property-inspector');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    let savedDevice = "default";
+
+    $UD.onAdd((message) => {
+      console.log("[PropertyInspector] Action added, param:", message.param);
+      if (message.param) {
+        if (message.param.device) {
+          savedDevice = message.param.device;
+        }
+        if (message.param.step) {
+          stepSelect.value = message.param.step;
+        }
+      }
+      
+      requestDevices();
+    });
+
+    $UD.onParamFromApp((message) => {
+      console.log("[PropertyInspector] Param from App:", message.param);
+      if (message.param) {
+        if (message.param.device) {
+          savedDevice = message.param.device;
+          deviceSelect.value = savedDevice;
+        }
+        if (message.param.step) {
+          stepSelect.value = message.param.step;
+        }
+      }
+    });
+
+    $UD.onSendToPropertyInspector((message) => {
+      const payload = message.payload;
+      console.log("[PropertyInspector] Received message from main service:", payload);
+      
+      if (payload && payload.action === 'devicesList') {
+        populateDevices(payload.devices);
+      }
+    });
+
+    function requestDevices() {
+      $UD.sendToPlugin({ action: 'getDevices' });
+    }
+
+    function populateDevices(devices) {
+      deviceSelect.innerHTML = '';
+      
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = 'default';
+      defaultOpt.textContent = 'Default (System Input)';
+      deviceSelect.appendChild(defaultOpt);
+
+      devices.forEach(device => {
+        const opt = document.createElement('option');
+        opt.value = device;
+        opt.textContent = device;
+        deviceSelect.appendChild(opt);
+      });
+
+      deviceSelect.value = savedDevice;
+
+      loadingIndicator.style.animation = 'none';
+      loadingIndicator.style.opacity = '1';
+    }
+
+    form.addEventListener('change', () => {
+      const settings = Utils.getFormValue('#property-inspector');
+      console.log("[PropertyInspector] Form changed, saving settings:", settings);
+      $UD.sendToPlugin(settings);
+    });
+  </script>
+</body>
+</html>

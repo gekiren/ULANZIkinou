@@ -1,0 +1,10 @@
+{
+  "name": "com.ulanzi.mycustomplugin.ulanziplugin",
+  "version": "1.0.0",
+  "description": "Windows Line In volume and mute control plugin",
+  "type": "module",
+  "main": "plugin/app.js",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

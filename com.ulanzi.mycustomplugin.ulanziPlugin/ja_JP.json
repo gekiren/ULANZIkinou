@@ -1,0 +1,16 @@
+{
+  "Name": "ライン入力コントロール",
+  "Description": "Windowsのライン入力の音量調整およびミュート制御",
+  "Actions": [
+    {
+      "Name": "ライン入力",
+      "Tooltip": "ライン入力の音量とミュートを操作"
+    }
+  ],
+  "Localization": {
+    "Select Audio Device": "オーディオデバイスの選択",
+    "Select Device": "デバイスを選択",
+    "Volume Change Step": "音量の変更ステップ",
+    "Description Text": "ノブを回して音量を変更、クリックしてミュートを切り替えます。"
+  }
+}

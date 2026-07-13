@@ -1,0 +1,38 @@
+{
+  "id": "linein_layout",
+  "items": [
+    {
+      "type": "pixmap",
+      "key": "mic_icon",
+      "background": "transparent",
+      "enabled": true,
+      "rect": [38, 10, 50, 50],
+      "zOrder": 1,
+      "value": "assets/mic_on.png"
+    },
+    {
+      "type": "text",
+      "key": "volume_text",
+      "background": "transparent",
+      "enabled": true,
+      "rect": [0, 70, 126, 30],
+      "zOrder": 2,
+      "alignment": "center",
+      "color": "#ffffff",
+      "font": { "size": 14, "weight": 600 },
+      "text": "50%"
+    },
+    {
+      "type": "text",
+      "key": "title",
+      "background": "transparent",
+      "enabled": true,
+      "rect": [0, 105, 126, 30],
+      "zOrder": 3,
+      "alignment": "center",
+      "color": "#aaaaaa",
+      "font": { "size": 10 },
+      "text": "Line In"
+    }
+  ]
+}

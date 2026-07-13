@@ -1,0 +1,16 @@
+{
+  "Name": "Line In Control",
+  "Description": "Control Windows Line In (Recording) Volume and Mute",
+  "Actions": [
+    {
+      "Name": "Line In Control",
+      "Tooltip": "Control volume and mute state of line input"
+    }
+  ],
+  "Localization": {
+    "Select Audio Device": "Select Audio Device",
+    "Select Device": "Select Device",
+    "Volume Change Step": "Volume Change Step",
+    "Description Text": "Rotate knob to change volume, click to toggle mute state."
+  }
+}
