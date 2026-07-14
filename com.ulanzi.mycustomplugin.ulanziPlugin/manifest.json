@@ -13,9 +13,7 @@
       "Icon": "assets/icon.png",
       "UUID": "com.ulanzi.ulanzistudio.lineincontrol.control",
       "Controllers": ["Encoder"],
-      "Encoder": {
-        "layout": "layout.json"
-      },
+      "Encoder": {},
       "PropertyInspectorPath": "property-inspector/inspector.html",
       "state": 0,
       "States": [

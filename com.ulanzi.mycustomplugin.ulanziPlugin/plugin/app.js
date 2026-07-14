@@ -36,20 +36,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 console.log("Plugin debug log system initialized. argv:", process.argv);
 
-// ローカル画像を Base64 データURLに変換する処理
-function getBase64Image(relativePath) {
-  try {
-    const fullPath = path.join(__dirname, '..', relativePath);
-    const fileBuffer = fs.readFileSync(fullPath);
-    return `data:image/png;base64,${fileBuffer.toString('base64')}`;
-  } catch (err) {
-    console.error(`[app.js] Failed to read image for Base64: ${relativePath}`, err);
-    return "";
-  }
-}
 
-const micOnBase64 = getBase64Image('assets/mic_on.png');
-const micOffBase64 = getBase64Image('assets/mic_off.png');
 
 const UlanziNodeApi = require('./libs/ulanziNodeApi.js');
 const scriptPath = path.join(__dirname, 'libs', 'audioControl.ps1');
@@ -157,15 +144,12 @@ async function updateDialUI(context) {
   if (!config) return;
 
   const volText = config.currentMute ? "MUTE" : `${config.currentVolume}%`;
-  const iconData = config.currentMute ? micOffBase64 : micOnBase64;
+  const baseIconRelPath = config.currentMute ? 'assets/mic_off.png' : 'assets/mic_on.png';
 
   console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${volText}, Mute=${config.currentMute}`);
   
-  // カスタムキーを指定して layout.json の表示要素を個別に更新
-  $UD.setFeedback({
-    "mic_icon": iconData,
-    "volume_text": volText
-  }, context);
+  // デフォルトレイアウトを利用し、画像パスとテキストを標準APIで送信します。
+  $UD.setPathIcon(context, baseIconRelPath, volText);
 }
 
 const syncQueue = {};
