@@ -50,6 +50,9 @@ function runPowerShell(action) {
 
     const command = `"${powershellPath}" -NoProfile -ExecutionPolicy Bypass -File "${scriptPath}" -Action ${action}`;
     exec(command, { encoding: 'utf8' }, (error, stdout, stderr) => {
+      if (stderr && stderr.trim()) {
+        console.error(`[DisplayToggle] PowerShell stderr for ${action}:`, stderr);
+      }
       if (error) {
         reject(error);
       } else {
@@ -78,6 +81,10 @@ async function updateUI(context, status) {
 
 // システムの状態を取得して同期
 async function syncFromSystem(context) {
+  const config = SETTINGS_CACHE[context];
+  if (config && config.simulationMode) {
+    return; // シミュレーションモード時はシステムからの同期をスキップ
+  }
   try {
     const status = await runPowerShell('GetStatus');
     await updateUI(context, status);
@@ -123,9 +130,11 @@ $UD.onAdd(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action added: ${context}`);
 
+  const savedSettings = jsn.param || {};
   SETTINGS_CACHE[context] = {
     isActive: true,
-    lastStatus: null
+    lastStatus: null,
+    simulationMode: savedSettings.simulationMode || false
   };
 
   await syncFromSystem(context);
@@ -169,12 +178,29 @@ $UD.onRun(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action run (toggle display) for context: ${context}`);
   
-  try {
-    const status = await runPowerShell('Toggle');
-    console.log(`[DisplayToggle] Switch complete. New status: ${status}`);
-    await updateUI(context, status);
-  } catch (err) {
-    console.error("[DisplayToggle] Failed to toggle display switcher:", err);
+  const config = SETTINGS_CACHE[context];
+  if (config && config.simulationMode) {
+    const currentStatus = config.lastStatus || 'Internal';
+    const nextStatus = currentStatus === 'Extend' ? 'Internal' : 'Extend';
+    console.log(`[DisplayToggle] Simulation toggle. ${currentStatus} -> ${nextStatus}`);
+    await updateUI(context, nextStatus);
+  } else {
+    try {
+      const status = await runPowerShell('Toggle');
+      console.log(`[DisplayToggle] Switch complete. New status: ${status}`);
+      await updateUI(context, status);
+    } catch (err) {
+      console.error("[DisplayToggle] Failed to toggle display switcher:", err);
+    }
+  }
+});
+
+// 設定更新イベント受信時のキャッシュ更新
+$UD.on('didReceiveSettings', (jsn) => {
+  const context = `${jsn.uuid}___${jsn.key}___${jsn.actionid}`;
+  console.log(`[app.js] didReceiveSettings for ${context}:`, jsn.settings);
+  if (SETTINGS_CACHE[context]) {
+    SETTINGS_CACHE[context].simulationMode = jsn.settings?.simulationMode || false;
   }
 });
 
