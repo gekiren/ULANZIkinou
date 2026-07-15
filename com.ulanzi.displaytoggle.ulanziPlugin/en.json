@@ -1,0 +1,10 @@
+{
+  "Name": "Display Toggle",
+  "Description": "Toggle Windows Display Mode between PC screen only and Extend",
+  "Actions": [
+    {
+      "Name": "Display Toggle",
+      "Tooltip": "Toggle display mode (PC Only / Extend)"
+    }
+  ]
+}

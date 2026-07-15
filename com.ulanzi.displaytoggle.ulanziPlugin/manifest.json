@@ -1,0 +1,33 @@
+{
+  "Author": "Antigravity",
+  "Name": "Display Toggle",
+  "Description": "Toggle Windows Display Mode between PC screen only and Extend",
+  "Icon": "assets/icon.png",
+  "Version": "1.0.0",
+  "UUID": "com.ulanzi.ulanzistudio.displaytoggle",
+  "Type": "JavaScript",
+  "CodePath": "plugin/app.js",
+  "Actions": [
+    {
+      "Name": "Display Toggle",
+      "Icon": "assets/icon.png",
+      "UUID": "com.ulanzi.ulanzistudio.displaytoggle.toggle",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "property-inspector/inspector.html",
+      "state": 0,
+      "States": [
+        {
+          "Name": "PC Only",
+          "Image": "assets/pc_only.png"
+        },
+        {
+          "Name": "Extend",
+          "Image": "assets/extend.png"
+        }
+      ]
+    }
+  ],
+  "OS": [
+    { "Platform": "windows", "MinimumVersion": "10" }
+  ]
+}

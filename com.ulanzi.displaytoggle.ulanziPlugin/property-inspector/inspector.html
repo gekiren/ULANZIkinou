@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../libs/css/uspi.css">
+  <style>
+    /* Premium Styling */
+    body {
+      background: #12131C;
+      color: #E2E8F0;
+      font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+    
+    .uspi-wrapper {
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13px;
+      color: #A7F3D0;
+      line-height: 1.5;
+    }
+
+    .info-box-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    /* Active status pulse */
+    .status-pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      animation: pulse 1.5s infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.5; }
+    }
+  </style>
+  <script src="../libs/js/constants.js"></script>
+  <script src="../libs/js/eventEmitter.js"></script>
+  <script src="../libs/js/timers.js"></script>
+  <script src="../libs/js/utils.js"></script>
+  <script src="../libs/js/ulanziApi.js"></script>
+</head>
+<body>
+  <div class="uspi-wrapper">
+    <div class="info-box">
+      <div class="info-box-title">
+        <span class="status-pulse"></span>
+        <span data-localize="Display Toggle">Display Toggle</span>
+      </div>
+      <div data-localize="Description Text">設定項目はありません。キーを押してPC画面のみと拡張表示をトグルします。</div>
+    </div>
+  </div>
+
+  <script>
+    // アクションのUUIDと接続
+    $UD.connect('com.ulanzi.ulanzistudio.displaytoggle.toggle');
+
+    $UD.onConnected(() => {
+      console.log("[PropertyInspector] Display Toggle Property Inspector connected to websocket");
+    });
+  </script>
+</body>
+</html>

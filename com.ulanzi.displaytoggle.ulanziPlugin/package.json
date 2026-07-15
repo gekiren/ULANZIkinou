@@ -1,0 +1,9 @@
+{
+  "name": "com.ulanzi.displaytoggle.ulanziplugin",
+  "version": "1.0.0",
+  "description": "Windows display switch toggle plugin for Ulanzi Creative Deck",
+  "main": "plugin/app.js",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
