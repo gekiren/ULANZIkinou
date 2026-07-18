@@ -285,23 +285,40 @@ $UD.onSendToPlugin(async (jsn) => {
   const payload = jsn.payload;
   console.log("[app.js] Received settings from Property Inspector:", payload);
 
+  // 届いた context の解析
+  const parts = context.split('___');
+  const actionid = parts[2];
+
+  // SETTINGS_CACHE から一致する actionid を持つ正しいキー情報をマージする
+  let cacheKey = parts[1];
+  for (const cacheCtx of Object.keys(SETTINGS_CACHE)) {
+    const cacheParts = cacheCtx.split('___');
+    if (cacheParts[2] === actionid && cacheParts[1]) {
+      cacheKey = cacheParts[1];
+      break;
+    }
+  }
+
+  // 1. Action UUID 宛てのコンテキストを作成
+  const actionContext = `com.ulanzi.ulanzistudio.lineincontrol.control___${cacheKey}___${actionid}`;
+  // 2. Plugin UUID 宛てのコンテキストを作成
+  const pluginContext = `com.ulanzi.ulanzistudio.lineincontrol___${cacheKey}___${actionid}`;
+
   if (payload.action === 'getDevices') {
-    // デバイス一覧のリクエストがあれば即座に取得して返す
     const list = await getDevices();
     
-    // context の第1セグメントが Action UUID の場合は Plugin UUID に補正して送信
-    const parts = context.split('___');
-    if (parts[0] === 'com.ulanzi.ulanzistudio.lineincontrol.control') {
-      parts[0] = 'com.ulanzi.ulanzistudio.lineincontrol';
-    }
-    const targetContext = parts.join('___');
-
-    $UD.sendToPropertyInspector({ action: 'devicesList', devices: list }, targetContext);
+    // 両方のコンテキストで送信し、Bridge の仕様（Action UUID または Plugin UUID）のどちらでも届くようにする
+    console.log(`[app.js] Sending devices list via both UUIDs: key=${cacheKey}`);
+    $UD.sendToPropertyInspector({ action: 'devicesList', devices: list }, actionContext);
+    $UD.sendToPropertyInspector({ action: 'devicesList', devices: list }, pluginContext);
     return;
   }
 
-  if (!SETTINGS_CACHE[context]) {
-    SETTINGS_CACHE[context] = {
+  // SETTINGS_CACHE の更新対象コンテキストの uuid は Plugin UUID であるべき
+  const targetPluginContext = `com.ulanzi.ulanzistudio.lineincontrol___${cacheKey}___${actionid}`;
+
+  if (!SETTINGS_CACHE[targetPluginContext]) {
+    SETTINGS_CACHE[targetPluginContext] = {
       device: "default",
       step: 5,
       currentVolume: 50,
@@ -310,20 +327,20 @@ $UD.onSendToPlugin(async (jsn) => {
   }
 
   if (payload.device !== undefined) {
-    SETTINGS_CACHE[context].device = payload.device;
+    SETTINGS_CACHE[targetPluginContext].device = payload.device;
   }
   if (payload.step !== undefined) {
-    SETTINGS_CACHE[context].step = parseInt(payload.step) || 5;
+    SETTINGS_CACHE[targetPluginContext].step = parseInt(payload.step) || 5;
   }
 
   // 設定を上位機に保存
   $UD.setSettings({
-    device: SETTINGS_CACHE[context].device,
-    step: SETTINGS_CACHE[context].step
-  }, context);
+    device: SETTINGS_CACHE[targetPluginContext].device,
+    step: SETTINGS_CACHE[targetPluginContext].step
+  }, targetPluginContext);
 
   // 新しいデバイスの音量と同期
-  await syncFromSystem(context);
+  await syncFromSystem(targetPluginContext);
 });
 
 // 上位機側からパラメータ同期（Property Inspector読み込み時など）
