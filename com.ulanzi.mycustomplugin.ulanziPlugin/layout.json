@@ -1,0 +1,38 @@
+{
+  "id": "linein_control_layout",
+  "items": [
+    {
+      "type": "pixmap",
+      "key": "icon",
+      "background": "transparent",
+      "enabled": true,
+      "rect": [31, 10, 64, 64],
+      "zOrder": 0,
+      "value": "assets/icon.png"
+    },
+    {
+      "type": "text",
+      "key": "text2",
+      "background": "transparent",
+      "enabled": true,
+      "rect": [0, 80, 126, 25],
+      "zOrder": 1,
+      "alignment": "center",
+      "color": "#ffffff",
+      "font": { "size": 9 },
+      "text": "0%"
+    },
+    {
+      "type": "text",
+      "key": "title",
+      "background": "transparent",
+      "enabled": true,
+      "rect": [0, 110, 126, 25],
+      "zOrder": 2,
+      "alignment": "center",
+      "color": "#dfdfdf",
+      "font": { "size": 8 },
+      "text": ""
+    }
+  ]
+}
