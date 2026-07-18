@@ -153,9 +153,7 @@ async function updateDialUI(context) {
 
   // カスタムレイアウト上の "text2" 要素に対して音量%を動的に更新
   $UD.setFeedback({
-    "text2": {
-      "text": volText
-    }
+    "text2": volText
   }, context);
 }
 
