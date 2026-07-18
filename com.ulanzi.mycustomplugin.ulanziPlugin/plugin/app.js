@@ -288,7 +288,15 @@ $UD.onSendToPlugin(async (jsn) => {
   if (payload.action === 'getDevices') {
     // デバイス一覧のリクエストがあれば即座に取得して返す
     const list = await getDevices();
-    $UD.sendToPropertyInspector({ action: 'devicesList', devices: list }, context);
+    
+    // context の第1セグメントが Action UUID の場合は Plugin UUID に補正して送信
+    const parts = context.split('___');
+    if (parts[0] === 'com.ulanzi.ulanzistudio.lineincontrol.control') {
+      parts[0] = 'com.ulanzi.ulanzistudio.lineincontrol';
+    }
+    const targetContext = parts.join('___');
+
+    $UD.sendToPropertyInspector({ action: 'devicesList', devices: list }, targetContext);
     return;
   }
 
