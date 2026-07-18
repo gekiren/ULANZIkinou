@@ -314,11 +314,11 @@ $UD.onSendToPlugin(async (jsn) => {
     return;
   }
 
-  // SETTINGS_CACHE の更新対象コンテキストの uuid は Plugin UUID であるべき
-  const targetPluginContext = `com.ulanzi.ulanzistudio.lineincontrol___${cacheKey}___${actionid}`;
+  // SETTINGS_CACHE の更新対象コンテキストの uuid は Action UUID とする
+  const targetActionContext = `com.ulanzi.ulanzistudio.lineincontrol.control___${cacheKey}___${actionid}`;
 
-  if (!SETTINGS_CACHE[targetPluginContext]) {
-    SETTINGS_CACHE[targetPluginContext] = {
+  if (!SETTINGS_CACHE[targetActionContext]) {
+    SETTINGS_CACHE[targetActionContext] = {
       device: "default",
       step: 5,
       currentVolume: 50,
@@ -327,20 +327,20 @@ $UD.onSendToPlugin(async (jsn) => {
   }
 
   if (payload.device !== undefined) {
-    SETTINGS_CACHE[targetPluginContext].device = payload.device;
+    SETTINGS_CACHE[targetActionContext].device = payload.device;
   }
   if (payload.step !== undefined) {
-    SETTINGS_CACHE[targetPluginContext].step = parseInt(payload.step) || 5;
+    SETTINGS_CACHE[targetActionContext].step = parseInt(payload.step) || 5;
   }
 
   // 設定を上位機に保存
   $UD.setSettings({
-    device: SETTINGS_CACHE[targetPluginContext].device,
-    step: SETTINGS_CACHE[targetPluginContext].step
-  }, targetPluginContext);
+    device: SETTINGS_CACHE[targetActionContext].device,
+    step: SETTINGS_CACHE[targetActionContext].step
+  }, targetActionContext);
 
   // 新しいデバイスの音量と同期
-  await syncFromSystem(targetPluginContext);
+  await syncFromSystem(targetActionContext);
 });
 
 // 上位機側からパラメータ同期（Property Inspector読み込み時など）
