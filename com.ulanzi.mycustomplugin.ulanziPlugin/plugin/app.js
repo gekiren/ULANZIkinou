@@ -148,14 +148,10 @@ async function updateDialUI(context) {
 
   console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${volText}, Mute=${config.currentMute}`);
   
-  // デフォルトレイアウトおよびカスタムレイアウトの "icon" キーに対して画像を送信
-  $UD.setPathIcon(context, baseIconRelPath);
-
-  // カスタムレイアウト上の "text2" 要素に対して音量%を動的に更新
+  // setFeedbackの1回の通信で "icon" (画像) と "text2" (テキスト) を同時に更新します
   $UD.setFeedback({
-    "text2": {
-      "text": volText
-    }
+    "icon": baseIconRelPath,
+    "text2": volText
   }, context);
 }
 
