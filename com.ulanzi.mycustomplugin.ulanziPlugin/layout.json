@@ -12,7 +12,7 @@
     },
     {
       "type": "text",
-      "key": "text2",
+      "key": "title",
       "background": "transparent",
       "enabled": true,
       "rect": [0, 80, 126, 25],
@@ -21,18 +21,6 @@
       "color": "#ffffff",
       "font": { "size": 9 },
       "text": "0%"
-    },
-    {
-      "type": "text",
-      "key": "title",
-      "background": "transparent",
-      "enabled": true,
-      "rect": [0, 110, 126, 25],
-      "zOrder": 2,
-      "alignment": "center",
-      "color": "#dfdfdf",
-      "font": { "size": 8 },
-      "text": ""
     }
   ]
 }
