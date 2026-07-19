@@ -1,0 +1,10 @@
+{
+  "Name": "アプリ再起動",
+  "Description": "Ulanzi Studio (UlanziDeck) アプリを再起動します。",
+  "Actions": [
+    {
+      "Name": "アプリ再起動",
+      "Tooltip": "Ulanzi Studio (UlanziDeck) アプリを再起動します"
+    }
+  ]
+}

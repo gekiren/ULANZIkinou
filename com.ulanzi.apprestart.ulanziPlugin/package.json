@@ -1,0 +1,9 @@
+{
+  "name": "com.ulanzi.apprestart.ulanziplugin",
+  "version": "1.0.0",
+  "description": "Restart Ulanzi Studio (UlanziDeck) application",
+  "main": "plugin/app.js",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

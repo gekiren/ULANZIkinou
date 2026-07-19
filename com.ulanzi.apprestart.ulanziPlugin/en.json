@@ -1,0 +1,10 @@
+{
+  "Name": "App Restart",
+  "Description": "Restart Ulanzi Studio (UlanziDeck) application.",
+  "Actions": [
+    {
+      "Name": "Restart",
+      "Tooltip": "Restart Ulanzi Studio (UlanziDeck) application"
+    }
+  ]
+}

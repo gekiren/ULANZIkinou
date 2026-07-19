@@ -1,0 +1,28 @@
+{
+  "Author": "Antigravity",
+  "Name": "App Restart",
+  "Description": "Restart Ulanzi Studio (UlanziDeck) application",
+  "Icon": "assets/icon.png",
+  "Version": "1.0.0",
+  "UUID": "com.ulanzi.ulanzistudio.apprestart",
+  "Type": "JavaScript",
+  "CodePath": "plugin/app.js",
+  "Actions": [
+    {
+      "Name": "App Restart",
+      "Icon": "assets/icon.png",
+      "UUID": "com.ulanzi.ulanzistudio.apprestart.restart",
+      "Controllers": ["Keypad"],
+      "state": 0,
+      "States": [
+        {
+          "Name": "Restart",
+          "Image": "assets/icon.png"
+        }
+      ]
+    }
+  ],
+  "OS": [
+    { "Platform": "windows", "MinimumVersion": "10" }
+  ]
+}
