@@ -112,11 +112,22 @@ class UlanziNodeApi extends EventEmitter {
 
   setFeedback(payload, context) {
     const parts = context.split('___');
+    
+    // パターン1: Plugin UUID (this.uuid) を維持し、Action情報は context パラメータ等で渡す
+    this.send('setFeedback', {
+      key: parts[1],
+      actionid: parts[2],
+      payload,
+      context: context
+    });
+
+    // パターン2: Action UUID で強制上書きして送信 (旧来の挙動に context も付与)
     this.send('setFeedback', {
       uuid: parts[0],
       key: parts[1],
       actionid: parts[2],
-      payload
+      payload,
+      context: context
     });
   }
 

@@ -148,9 +148,11 @@ async function updateDialUI(context) {
 
   console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${volText}, Mute=${config.currentMute}`);
   
-  // setFeedbackの1回の通信で "icon" (画像) と "text2" (テキスト) を同時に更新します
+  // 1. "icon" は標準キーとして振る舞うため、プロトコル通り setPathIcon で更新
+  $UD.setPathIcon(context, baseIconRelPath);
+
+  // 2. カスタムキー "text2" は、修正した setFeedback で更新
   $UD.setFeedback({
-    "icon": baseIconRelPath,
     "text2": volText
   }, context);
 }
