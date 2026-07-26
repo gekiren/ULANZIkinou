@@ -1,0 +1,31 @@
+{
+  "Author": "Antigravity",
+  "Name": "Master Volume Control",
+  "Description": "Control Windows Master Volume and Mute with Realtime Percent Display",
+  "Icon": "assets/icon.png",
+  "Version": "1.0.0",
+  "UUID": "com.ulanzi.ulanzistudio.mastervolume",
+  "Type": "JavaScript",
+  "CodePath": "plugin/app.js",
+  "Actions": [
+    {
+      "Name": "Master Volume",
+      "Icon": "assets/icon.png",
+      "UUID": "com.ulanzi.ulanzistudio.mastervolume.control",
+      "Controllers": ["Encoder"],
+      "Encoder": {
+        "layout": "layout.json"
+      },
+      "state": 0,
+      "States": [
+        {
+          "Name": "Master Volume",
+          "Image": "assets/icon.png"
+        }
+      ]
+    }
+  ],
+  "OS": [
+    { "Platform": "windows", "MinimumVersion": "10" }
+  ]
+}
