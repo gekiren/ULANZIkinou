@@ -39,6 +39,10 @@ const $UD = new UlanziNodeApi();
 
 const SETTINGS_CACHE = {};
 
+// アクションUUID定数
+const ACTION_MASTER  = 'com.ulanzi.ulanzistudio.mastervolume.control';
+const ACTION_APPVOL  = 'com.ulanzi.ulanzistudio.mastervolume.appvolume';
+
 function runPowerShell(args) {
   return new Promise((resolve, reject) => {
     const system32 = process.env.SystemRoot ? path.join(process.env.SystemRoot, 'System32') : 'C:\\Windows\\System32';
@@ -54,6 +58,8 @@ function runPowerShell(args) {
     });
   });
 }
+
+// ========= Master Volume API =========
 
 async function getVolume(device = "default") {
   try {
@@ -86,11 +92,59 @@ async function setMute(device = "default", mute = false) {
   await runPowerShell(`-Action SetMute -DeviceName "${device}" -Value ${val}`);
 }
 
+// ========= Foreground App Volume API =========
+
+async function getForegroundVolume() {
+  try {
+    const output = await runPowerShell(`-Action GetForegroundVolume`);
+    const val = parseFloat(output.trim());
+    // -1 = セッションなし（無音アプリ） → フォールバック用に-1を返す
+    if (val < 0) return -1;
+    return Math.round(val * 100);
+  } catch (err) {
+    console.error(`[AppVolume] Failed to get foreground volume:`, err);
+    return -1;
+  }
+}
+
+async function setForegroundVolume(vol = 50) {
+  const val = Math.max(0, Math.min(100, vol)) / 100.0;
+  await runPowerShell(`-Action SetForegroundVolume -Value ${val}`);
+}
+
+async function getForegroundMute() {
+  try {
+    const output = await runPowerShell(`-Action GetForegroundMute`);
+    const val = parseInt(output.trim());
+    if (val < 0) return null; // セッションなし
+    return val === 1;
+  } catch (err) {
+    console.error(`[AppVolume] Failed to get foreground mute:`, err);
+    return null;
+  }
+}
+
+async function setForegroundMute(mute = false) {
+  const val = mute ? 1 : 0;
+  await runPowerShell(`-Action SetForegroundMute -Value ${val}`);
+}
+
+async function getForegroundAppName() {
+  try {
+    const output = await runPowerShell(`-Action GetForegroundAppName`);
+    return output.trim() || 'App';
+  } catch (err) {
+    return 'App';
+  }
+}
+
+// ========= Volume Queue =========
+
 const volumeQueue = {
   isExecuting: {},
   pendingVolume: {},
 
-  async apply(context, device, volume) {
+  async apply(context, isAppMode, device, volume) {
     this.pendingVolume[context] = volume;
     if (this.isExecuting[context]) return;
     this.isExecuting[context] = true;
@@ -99,7 +153,11 @@ const volumeQueue = {
       const volToApply = this.pendingVolume[context];
       this.pendingVolume[context] = null;
       try {
-        await setVolume(device, volToApply);
+        if (isAppMode) {
+          await setForegroundVolume(volToApply);
+        } else {
+          await setVolume(device, volToApply);
+        }
       } catch (err) {
         console.error(`[AudioControl] Error applying volume:`, err);
       }
@@ -108,24 +166,29 @@ const volumeQueue = {
   }
 };
 
-// 5%刻みの音量％画像/ミュート画像切り替えによる画面描画ロジック
+// ========= UI Update =========
+
+// 5%刻みの音量％画像/ミュート画像切り替えによる画面描画ロジック（マスター・アプリ共通）
 async function updateDialUI(context) {
   const config = SETTINGS_CACHE[context];
   if (!config) return;
 
   const vol5 = Math.max(0, Math.min(100, Math.round(config.currentVolume / 5) * 5));
   const iconRelPath = config.currentMute ? 'assets/vol_mute.png' : `assets/vol_${vol5}.png`;
-  const volText = config.currentMute ? "MUTE" : `${config.currentVolume}%`;
+
+  let volText;
+  if (config.isAppMode) {
+    // アプリ名（最大8文字）+ 音量%
+    const appShort = (config.appName || 'App').substring(0, 8);
+    volText = config.currentMute ? `${appShort}:MUTE` : `${appShort}:${config.currentVolume}%`;
+  } else {
+    volText = config.currentMute ? "MUTE" : `${config.currentVolume}%`;
+  }
 
   console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${config.currentVolume}%, Mute=${config.currentMute}, Path=${iconRelPath}`);
 
   try {
-    // 1. setFeedback でテキストタイトルも同時に更新
-    $UD.setFeedback({
-      title: volText
-    }, context);
-
-    // 2. setPathIcon で音量％・ミュート付きの動的画像を表示
+    $UD.setFeedback({ title: volText }, context);
     $UD.setPathIcon(context, iconRelPath, volText);
   } catch (err) {
     console.error(`[AudioControl] Error updating UI:`, err);
@@ -133,6 +196,8 @@ async function updateDialUI(context) {
 }
 
 const syncQueue = {};
+
+// ========= Sync from System =========
 
 async function syncFromSystem(context) {
   if (syncQueue[context]) {
@@ -151,12 +216,34 @@ async function syncFromSystem(context) {
   try {
     const config = SETTINGS_CACHE[context];
     if (config) {
-      const device = config.device || "default";
-      const vol = await getVolume(device);
-      const mute = await getMute(device);
+      if (config.isAppMode) {
+        // アクティブウィンドウモード
+        const [appVol, appMute, appName] = await Promise.all([
+          getForegroundVolume(),
+          getForegroundMute(),
+          getForegroundAppName()
+        ]);
 
-      config.currentVolume = vol;
-      config.currentMute = mute;
+        config.appName = appName;
+
+        if (appVol < 0) {
+          // セッションなし → マスター音量にフォールバック
+          const device = config.device || "default";
+          config.currentVolume = await getVolume(device);
+          config.currentMute = await getMute(device);
+          config.appName = 'Master';
+        } else {
+          config.currentVolume = appVol;
+          config.currentMute = appMute === null ? false : appMute;
+        }
+      } else {
+        // マスター音量モード
+        const device = config.device || "default";
+        const vol = await getVolume(device);
+        const mute = await getMute(device);
+        config.currentVolume = vol;
+        config.currentMute = mute;
+      }
 
       await updateDialUI(context);
     }
@@ -170,23 +257,33 @@ async function syncFromSystem(context) {
   }
 }
 
+// ========= Plugin Connect =========
+
 $UD.connect('com.ulanzi.ulanzistudio.mastervolume');
 
 $UD.onConnected(() => {
   console.log("[app.js] Master Volume Service connected to Ulanzi Studio");
 });
 
+// ========= Action Add =========
+
 $UD.onAdd(async (jsn) => {
   const context = jsn.context;
-  console.log(`[app.js] Action added: ${context}`);
+  const actionId = jsn.actionid || '';
+  const isAppMode = actionId === ACTION_APPVOL;
+  console.log(`[app.js] Action added: ${context}, actionId=${actionId}, isAppMode=${isAppMode}`);
 
   if (!SETTINGS_CACHE[context]) {
     SETTINGS_CACHE[context] = {
+      isAppMode,
       device: "default",
       step: 5,
       currentVolume: 50,
-      currentMute: false
+      currentMute: false,
+      appName: 'App'
     };
+  } else {
+    SETTINGS_CACHE[context].isAppMode = isAppMode;
   }
 
   $UD.send('getSettings', {
@@ -198,17 +295,24 @@ $UD.onAdd(async (jsn) => {
   await syncFromSystem(context);
 });
 
+// ========= Settings Received =========
+
 $UD.on('didReceiveSettings', async (jsn) => {
   const context = `${jsn.uuid}___${jsn.key}___${jsn.actionid}`;
+  const isAppMode = (jsn.actionid || '') === ACTION_APPVOL;
   console.log(`[app.js] Received settings via didReceiveSettings for ${context}:`, jsn.settings);
 
   if (!SETTINGS_CACHE[context]) {
     SETTINGS_CACHE[context] = {
+      isAppMode,
       device: "default",
       step: 5,
       currentVolume: 50,
-      currentMute: false
+      currentMute: false,
+      appName: 'App'
     };
+  } else {
+    SETTINGS_CACHE[context].isAppMode = isAppMode;
   }
 
   if (jsn.settings) {
@@ -219,6 +323,8 @@ $UD.on('didReceiveSettings', async (jsn) => {
   await syncFromSystem(context);
 });
 
+// ========= SetActive =========
+
 $UD.onSetActive(async (jsn) => {
   const context = jsn.context;
   console.log("[app.js] Action SetActive:", context, jsn.active);
@@ -226,6 +332,8 @@ $UD.onSetActive(async (jsn) => {
     await syncFromSystem(context);
   }
 });
+
+// ========= Clear =========
 
 $UD.onClear((jsn) => {
   if (jsn.param) {
@@ -236,15 +344,19 @@ $UD.onClear((jsn) => {
   }
 });
 
+// ========= Param from App (Inspector) =========
+
 $UD.onParamFromApp(async (jsn) => {
   const context = jsn.context;
   if (!SETTINGS_CACHE[context]) {
     console.log(`[app.js] Cache initialized in onParamFromApp for ${context}`);
     SETTINGS_CACHE[context] = {
+      isAppMode: false,
       device: "default",
       step: 5,
       currentVolume: 50,
-      currentMute: false
+      currentMute: false,
+      appName: 'App'
     };
   }
 
@@ -256,27 +368,40 @@ $UD.onParamFromApp(async (jsn) => {
   await syncFromSystem(context);
 });
 
+// ========= Dial Rotate =========
+
 $UD.onDialRotate(async (jsn) => {
   const context = jsn.context;
+  const actionId = jsn.actionid || '';
+  const isAppMode = actionId === ACTION_APPVOL;
   let config = SETTINGS_CACHE[context];
 
   if (!config) {
     console.log(`[app.js] Fallback config creation onDialRotate for ${context}`);
     SETTINGS_CACHE[context] = {
+      isAppMode,
       device: "default",
       step: 5,
-      currentVolume: await getVolume("default"),
-      currentMute: await getMute("default")
+      currentVolume: isAppMode ? (await getForegroundVolume().catch(() => 50) || 50) : await getVolume("default"),
+      currentMute: isAppMode ? false : await getMute("default"),
+      appName: isAppMode ? await getForegroundAppName() : 'Master'
     };
     config = SETTINGS_CACHE[context];
   }
 
-  const event = jsn.rotateEvent;
-  console.log(`[app.js] Dial rotate event for ${context}: ${event}`);
+  config.isAppMode = isAppMode;
 
+  const event = jsn.rotateEvent;
+  console.log(`[app.js] Dial rotate event for ${context}: ${event}, isAppMode=${isAppMode}`);
+
+  // ミュート中なら解除してから音量変更
   if (config.currentMute) {
     config.currentMute = false;
-    await setMute(config.device || "default", false);
+    if (isAppMode) {
+      await setForegroundMute(false);
+    } else {
+      await setMute(config.device || "default", false);
+    }
   }
 
   const step = config.step || 5;
@@ -291,32 +416,43 @@ $UD.onDialRotate(async (jsn) => {
   if (newVol !== config.currentVolume) {
     config.currentVolume = newVol;
     await updateDialUI(context);
-    await volumeQueue.apply(context, config.device || "default", newVol);
+    await volumeQueue.apply(context, isAppMode, config.device || "default", newVol);
   }
 });
 
+// ========= Dial Down (Mute Toggle) =========
+
 $UD.onDialDown(async (jsn) => {
   const context = jsn.context;
+  const actionId = jsn.actionid || '';
+  const isAppMode = actionId === ACTION_APPVOL;
   let config = SETTINGS_CACHE[context];
 
   if (!config) {
     console.log(`[app.js] Fallback config creation onDialDown for ${context}`);
     SETTINGS_CACHE[context] = {
+      isAppMode,
       device: "default",
       step: 5,
-      currentVolume: await getVolume("default"),
-      currentMute: await getMute("default")
+      currentVolume: 50,
+      currentMute: false,
+      appName: 'App'
     };
     config = SETTINGS_CACHE[context];
   }
 
-  console.log(`[app.js] Dial down (mute toggle) for ${context}`);
+  config.isAppMode = isAppMode;
+  console.log(`[app.js] Dial down (mute toggle) for ${context}, isAppMode=${isAppMode}`);
 
   config.currentMute = !config.currentMute;
   await updateDialUI(context);
 
   try {
-    await setMute(config.device || "default", config.currentMute);
+    if (isAppMode) {
+      await setForegroundMute(config.currentMute);
+    } else {
+      await setMute(config.device || "default", config.currentMute);
+    }
   } catch (err) {
     console.error("[app.js] Failed to toggle mute:", err);
   }
