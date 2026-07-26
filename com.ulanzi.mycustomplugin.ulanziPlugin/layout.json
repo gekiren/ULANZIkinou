@@ -6,16 +6,16 @@
       "key": "icon",
       "background": "transparent",
       "enabled": true,
-      "rect": [31, 10, 64, 64],
+      "rect": [0, 0, 126, 80],
       "zOrder": 0,
-      "value": "assets/icon.png"
+      "value": "assets/vol_50.png"
     },
     {
       "type": "text",
       "key": "title",
       "background": "transparent",
       "enabled": true,
-      "rect": [0, 80, 126, 25],
+      "rect": [0, 85, 126, 25],
       "zOrder": 1,
       "alignment": "center",
       "color": "#ffffff",
