@@ -138,18 +138,19 @@ const volumeQueue = {
   }
 };
 
-// 画面表示を更新する
+// 画面表示を更新する (10%刻みの単純表示)
 async function updateDialUI(context) {
   const config = SETTINGS_CACHE[context];
   if (!config) return;
 
-  const volText = config.currentMute ? "MUTE" : `${config.currentVolume}%`;
-  const baseIconRelPath = config.currentMute ? 'assets/mic_off.png' : 'assets/mic_on.png';
+  // 0% 〜 100% を10%刻みに丸める (0, 10, 20, ..., 100)
+  const vol10 = Math.max(0, Math.min(100, Math.round(config.currentVolume / 10) * 10));
+  const iconRelPath = `assets/vol_${vol10}.png`;
 
-  console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${volText}, Mute=${config.currentMute}`);
+  console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${config.currentVolume}%, Path=${iconRelPath}`);
   
-  // 標準のタイトル同期を利用して、画像と音量%（テキスト）を同時に更新
-  $UD.setPathIcon(context, baseIconRelPath, volText);
+  // 10%刻みの最小限PNG画像へ変更
+  $UD.setPathIcon(context, iconRelPath, "");
 }
 
 const syncQueue = {};
