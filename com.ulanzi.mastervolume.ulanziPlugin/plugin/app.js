@@ -39,9 +39,15 @@ const $UD = new UlanziNodeApi();
 
 const SETTINGS_CACHE = {};
 
-// アクションUUID定数
+// アクションUUID定数 (msg.uuid に送られてくる)
 const ACTION_MASTER  = 'com.ulanzi.ulanzistudio.mastervolume.control';
 const ACTION_APPVOL  = 'com.ulanzi.ulanzistudio.mastervolume.appvolume';
+
+function checkIsAppMode(jsn, context) {
+  if (jsn && jsn.uuid === ACTION_APPVOL) return true;
+  if (context && context.startsWith(ACTION_APPVOL)) return true;
+  return false;
+}
 
 function runPowerShell(args) {
   return new Promise((resolve, reject) => {
@@ -98,7 +104,6 @@ async function getForegroundVolume() {
   try {
     const output = await runPowerShell(`-Action GetForegroundVolume`);
     const val = parseFloat(output.trim());
-    // -1 = セッションなし（無音アプリ） → フォールバック用に-1を返す
     if (val < 0) return -1;
     return Math.round(val * 100);
   } catch (err) {
@@ -116,7 +121,7 @@ async function getForegroundMute() {
   try {
     const output = await runPowerShell(`-Action GetForegroundMute`);
     const val = parseInt(output.trim());
-    if (val < 0) return null; // セッションなし
+    if (val < 0) return null;
     return val === 1;
   } catch (err) {
     console.error(`[AppVolume] Failed to get foreground mute:`, err);
@@ -168,7 +173,6 @@ const volumeQueue = {
 
 // ========= UI Update =========
 
-// 5%刻みの音量％画像/ミュート画像切り替えによる画面描画ロジック（マスター・アプリ共通）
 async function updateDialUI(context) {
   const config = SETTINGS_CACHE[context];
   if (!config) return;
@@ -178,14 +182,13 @@ async function updateDialUI(context) {
 
   let volText;
   if (config.isAppMode) {
-    // アプリ名（最大8文字）+ 音量%
     const appShort = (config.appName || 'App').substring(0, 8);
     volText = config.currentMute ? `${appShort}:MUTE` : `${appShort}:${config.currentVolume}%`;
   } else {
     volText = config.currentMute ? "MUTE" : `${config.currentVolume}%`;
   }
 
-  console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${config.currentVolume}%, Mute=${config.currentMute}, Path=${iconRelPath}`);
+  console.log(`[AudioControl] Updating Dial UI for ${context} (isAppMode=${config.isAppMode}): Vol=${config.currentVolume}%, Mute=${config.currentMute}, Path=${iconRelPath}, Text=${volText}`);
 
   try {
     $UD.setFeedback({ title: volText }, context);
@@ -217,7 +220,6 @@ async function syncFromSystem(context) {
     const config = SETTINGS_CACHE[context];
     if (config) {
       if (config.isAppMode) {
-        // アクティブウィンドウモード
         const [appVol, appMute, appName] = await Promise.all([
           getForegroundVolume(),
           getForegroundMute(),
@@ -237,7 +239,6 @@ async function syncFromSystem(context) {
           config.currentMute = appMute === null ? false : appMute;
         }
       } else {
-        // マスター音量モード
         const device = config.device || "default";
         const vol = await getVolume(device);
         const mute = await getMute(device);
@@ -269,9 +270,8 @@ $UD.onConnected(() => {
 
 $UD.onAdd(async (jsn) => {
   const context = jsn.context;
-  const actionId = jsn.actionid || '';
-  const isAppMode = actionId === ACTION_APPVOL;
-  console.log(`[app.js] Action added: ${context}, actionId=${actionId}, isAppMode=${isAppMode}`);
+  const isAppMode = checkIsAppMode(jsn, context);
+  console.log(`[app.js] Action added: ${context}, jsn.uuid=${jsn.uuid}, isAppMode=${isAppMode}`);
 
   if (!SETTINGS_CACHE[context]) {
     SETTINGS_CACHE[context] = {
@@ -299,7 +299,7 @@ $UD.onAdd(async (jsn) => {
 
 $UD.on('didReceiveSettings', async (jsn) => {
   const context = `${jsn.uuid}___${jsn.key}___${jsn.actionid}`;
-  const isAppMode = (jsn.actionid || '') === ACTION_APPVOL;
+  const isAppMode = checkIsAppMode(jsn, context);
   console.log(`[app.js] Received settings via didReceiveSettings for ${context}:`, jsn.settings);
 
   if (!SETTINGS_CACHE[context]) {
@@ -348,16 +348,20 @@ $UD.onClear((jsn) => {
 
 $UD.onParamFromApp(async (jsn) => {
   const context = jsn.context;
+  const isAppMode = checkIsAppMode(jsn, context);
+
   if (!SETTINGS_CACHE[context]) {
     console.log(`[app.js] Cache initialized in onParamFromApp for ${context}`);
     SETTINGS_CACHE[context] = {
-      isAppMode: false,
+      isAppMode,
       device: "default",
       step: 5,
       currentVolume: 50,
       currentMute: false,
       appName: 'App'
     };
+  } else {
+    SETTINGS_CACHE[context].isAppMode = isAppMode;
   }
 
   if (jsn.param) {
@@ -372,8 +376,7 @@ $UD.onParamFromApp(async (jsn) => {
 
 $UD.onDialRotate(async (jsn) => {
   const context = jsn.context;
-  const actionId = jsn.actionid || '';
-  const isAppMode = actionId === ACTION_APPVOL;
+  const isAppMode = checkIsAppMode(jsn, context);
   let config = SETTINGS_CACHE[context];
 
   if (!config) {
@@ -394,7 +397,16 @@ $UD.onDialRotate(async (jsn) => {
   const event = jsn.rotateEvent;
   console.log(`[app.js] Dial rotate event for ${context}: ${event}, isAppMode=${isAppMode}`);
 
-  // ミュート中なら解除してから音量変更
+  // アプリモードの場合、回した瞬間にも最新のフォアグラウンドアプリ情報を取得
+  if (isAppMode) {
+    const appName = await getForegroundAppName();
+    const appVol = await getForegroundVolume();
+    config.appName = appName;
+    if (appVol >= 0) {
+      config.currentVolume = appVol;
+    }
+  }
+
   if (config.currentMute) {
     config.currentMute = false;
     if (isAppMode) {
@@ -424,8 +436,7 @@ $UD.onDialRotate(async (jsn) => {
 
 $UD.onDialDown(async (jsn) => {
   const context = jsn.context;
-  const actionId = jsn.actionid || '';
-  const isAppMode = actionId === ACTION_APPVOL;
+  const isAppMode = checkIsAppMode(jsn, context);
   let config = SETTINGS_CACHE[context];
 
   if (!config) {
