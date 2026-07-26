@@ -1,0 +1,12 @@
+{
+  "name": "com.ulanzi.pcsleep",
+  "version": "1.0.0",
+  "description": "PC Sleep plugin for Ulanzi Creative Deck",
+  "main": "plugin/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

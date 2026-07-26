@@ -13,3 +13,8 @@
 - **検証**: 動作確認は `KOUSIKI/UlanziDeckPlugin-SDK-main/UlanziDeckSimulator` を使用して行います。
 - **実機プラグインフォルダの場所**: 実機検証や配置の際は、必ず以下の公式プラグインフォルダ（Windows環境）を使用してください：
   - `C:\Users\toshi\AppData\Roaming\Ulanzi\UlanziDeck\Plugins`
+- **アイコン画像標準解像度**: プラグインで画像（アイコン）を使用・生成する際は、以下の標準解像度を厳守すること（サイズが大きすぎると実機表示で `?` エラーの原因になります）：
+  - プラグインメインアイコン (`icon.png`): **144 x 144 px**
+  - アクション表示画像 (`actionDefaultImage.png`): **232 x 232 px**
+  - カテゴリ用アイコン (`categoryIcon.png`): **196 x 196 px**
+  - アクション用アイコン (`actionIcon.png`): **40 x 40 px**

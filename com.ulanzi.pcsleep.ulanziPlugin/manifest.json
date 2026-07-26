@@ -1,0 +1,28 @@
+{
+  "Author": "Antigravity",
+  "Name": "PC Sleep",
+  "Description": "Put computer to sleep mode",
+  "Icon": "assets/icon.png",
+  "Version": "1.0.0",
+  "UUID": "com.ulanzi.pcsleep",
+  "Type": "JavaScript",
+  "CodePath": "plugin/app.js",
+  "Actions": [
+    {
+      "Name": "PC Sleep",
+      "Icon": "assets/icon.png",
+      "UUID": "com.ulanzi.pcsleep.sleep",
+      "Controllers": ["Keypad"],
+      "state": 0,
+      "States": [
+        {
+          "Name": "Sleep",
+          "Image": "assets/icon.png"
+        }
+      ]
+    }
+  ],
+  "OS": [
+    { "Platform": "windows", "MinimumVersion": "10" }
+  ]
+}

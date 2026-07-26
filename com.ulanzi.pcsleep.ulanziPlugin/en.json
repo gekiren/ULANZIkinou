@@ -1,0 +1,14 @@
+{
+  "Name": "PC Sleep",
+  "Description": "Put computer to sleep mode",
+  "Actions": [
+    {
+      "Name": "PC Sleep",
+      "States": [
+        {
+          "Name": "Sleep"
+        }
+      ]
+    }
+  ]
+}
