@@ -138,18 +138,18 @@ const volumeQueue = {
   }
 };
 
-// 画面表示を更新する (10%刻みの単純表示)
+// 画面表示を更新する (5%刻みの表示対応)
 async function updateDialUI(context) {
   const config = SETTINGS_CACHE[context];
   if (!config) return;
 
-  // 0% 〜 100% を10%刻みに丸める (0, 10, 20, ..., 100)
-  const vol10 = Math.max(0, Math.min(100, Math.round(config.currentVolume / 10) * 10));
-  const iconRelPath = `assets/vol_${vol10}.png`;
+  // 0% 〜 100% を5%刻みに丸める (0, 5, 10, 15, ..., 100)
+  const vol5 = Math.max(0, Math.min(100, Math.round(config.currentVolume / 5) * 5));
+  const iconRelPath = config.currentMute ? 'assets/vol_mute.png' : `assets/vol_${vol5}.png`;
 
-  console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${config.currentVolume}%, Path=${iconRelPath}`);
+  console.log(`[AudioControl] Updating Dial UI for ${context}: Vol=${config.currentVolume}%, Mute=${config.currentMute}, Path=${iconRelPath}`);
   
-  // 10%刻みの最小限PNG画像へ変更
+  // ミュート状態(vol_mute.png) または 5%刻みの音量％画像(vol_X.png) を送信
   $UD.setPathIcon(context, iconRelPath, "");
 }
 

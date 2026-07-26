@@ -2,8 +2,7 @@ Add-Type -AssemblyName System.Drawing
 
 $assetsDir = "c:\ULANZIkinou\com.ulanzi.mycustomplugin.ulanziPlugin\assets"
 
-function Make-WideIcon($v) {
-    # 横長アスペクト比 252x160 px
+function Make-WideIcon($v, $text, $colorHex, [float]$fSize) {
     $width = 252
     $height = 160
 
@@ -16,17 +15,15 @@ function Make-WideIcon($v) {
     $bgBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255, 21, 24, 34))
     $g.FillRectangle($bgBrush, 0, 0, $width, $height)
 
-    # 圧倒的な特大フォント (100%は62pt、2桁は76pt)
-    [float]$fontSize = if ($v -eq 100) { 62.0 } else { 76.0 }
-    $font = New-Object System.Drawing.Font("Arial", $fontSize, [System.Drawing.FontStyle]::Bold)
-    $brush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255, 0, 229, 255))
+    $font = New-Object System.Drawing.Font("Arial", $fSize, [System.Drawing.FontStyle]::Bold)
+    $brush = New-Object System.Drawing.SolidBrush([System.Drawing.ColorTranslator]::FromHtml($colorHex))
     
     $sf = New-Object System.Drawing.StringFormat
     $sf.Alignment = [System.Drawing.StringAlignment]::Center
     $sf.LineAlignment = [System.Drawing.StringAlignment]::Center
 
     $rect = New-Object System.Drawing.RectangleF(0, 0, $width, $height)
-    $g.DrawString("$v%", $font, $brush, $rect, $sf)
+    $g.DrawString($text, $font, $brush, $rect, $sf)
 
     $g.Dispose()
     $outputPath = Join-Path $assetsDir "vol_$v.png"
@@ -34,8 +31,15 @@ function Make-WideIcon($v) {
     $bmp.Dispose()
 }
 
-0..10 | ForEach-Object {
-    Make-WideIcon ($_ * 10)
+# 0% 〜 95% (5%刻み 計20枚)
+0..19 | ForEach-Object {
+    $v = $_ * 5
+    Make-WideIcon $v "$v%" "#00E5FF" 76.0
 }
+# 100%
+Make-WideIcon 100 "100%" "#00E5FF" 62.0
 
-Write-Host "Generated ultra-wide massive text PNG icons clean."
+# MUTE
+Make-WideIcon "mute" "MUTE" "#FF4D4D" 58.0
+
+Write-Host "Generated 5-percent step volume PNG icons (total 22 icons) clean."
