@@ -1,0 +1,130 @@
+{
+  "Name": "Discord",
+  "Description": "Control Discord",
+  "Actions": [
+    {
+      "Name": "Mute",
+      "Tooltip": "Toggle Microphone Mute"
+    },
+    {
+      "Name": "Deafen",
+      "Tooltip": "Toggle Deafen"
+    },
+    {
+      "Name": "Voice Channel",
+      "Tooltip": "Join or leave a voice channel"
+    },
+    {
+      "Name": "Text Channel",
+      "Tooltip": "Go to a text channel"
+    },
+    {
+      "Name": "Set Audio Device",
+      "Tooltip": "Select your audio input and output device"
+    },
+    {
+      "Name": "Push to Talk Toggle",
+      "Tooltip": "Toggle between push to talk and voice activity mode"
+    },
+    {
+      "Name": "Volume Control",
+      "Tooltip": "Control the volume of audio devices"
+    },
+    {
+      "Name": "User Volume Control",
+      "Tooltip": "Control the volume of users in voice channel"
+    }
+  ],
+  "Localization": {
+    "ClientId": "ClientId",
+    "ClientSecret": "ClientSecret",
+    "AppWarning": "Please launch or restart Discord client app",
+    "GuideTitle": "You need provide a 'Client Id' and 'Client Secret' for your Discord account. For instructions on how to get them",
+    "ClickHere": "Click here.",
+    "Confirm": "Confirm",
+    "Connect": "Connect",
+    "MuteDescription": "Toggle microphone mute on press",
+    "DeafenDescription": "Toggle deafen on press",
+    "TogglePushToTalkDescription": "Toggle push to talk on press",
+    "AuthWarning": "Discord authorization required",
+    "AccessLabel": "Authorization",
+    "AccessButton": "Request access",
+    "Server": "Server",
+    "NoServer": "No Server",
+    "VoiceChannel": "Voice Channel",
+    "TextChannel": "Text Channel",
+    "NoChannel": "No Channel",
+    "Action": "Action",
+    "PushToTalk": "Push to Talk",
+    "PushToMute": "Push to Mute",
+
+    "UserVolumeMode": "Mode",
+    "DeviceVolumeMode": "Mode",
+
+    "UserMuteType": "Mute Type",
+    "MuteUser": "Mute",
+    "UnmuteUser": "Unmute",
+    "ToggleMuteUser": "Toggle Mute",
+
+    "MuteDevice": "Mute",
+    "AdjustUserVol": "Adjust",
+    "AdjustDeviceVol": "Adjust",
+    "SetUserVol": "Set",
+    "SetDeviceVol": "Set",
+
+    "UserAdjustMode": "Adjust Mode",
+    "UserAdjustAny": "Any User",
+    "UserAdjustSpecific": "Specific User",
+
+    "VolStepSize": "Step Size",
+    "VolSetValue": "Desired Volume",
+
+    "DontDisplay": "Don't Display",
+    "DoNothing": "Do Nothing",
+
+    "User": "User",
+    "UserNick": "User Nick",
+    "Users": "Users",
+    "UsersNotFound": "No Users Found",
+
+    "IconStyle": "Icon Style",
+    "IconStatic": "Static",
+    "IconDynamic": "Dynamic",
+    "IconDynamicH": "Dynamic (Horizontal)",
+    "IconDynamicV": "Dynamic (Vertical)",
+
+    "IODeviceMode": "Mode",
+    "IODeviceModeInput": "Set Input",
+    "IODeviceModeOutput": "Set Output",
+    "IODeviceModeBoth": "Set Both",
+
+    "IODevice": "Device",
+    "IODeviceInput": "Input",
+    "IODeviceOutput": "Output",
+    "IODeviceDefault": "Default",
+    "IODeviceInputNotFound": "No Inputs Found",
+    "IODeviceOutputNotFound": "No Outputs Found",
+
+    "SrvStatMsg": "Messages",
+    "SrvStatMsgDisplayNew": "Display New Message Count",
+
+    "SrvStatUsrOnline": "Display Online Users",
+    "SrvStatUsrActive": "Display Recently Active Users",
+
+    "OnPress": "On Press",
+    "OnLongPress": "On Long Press",
+    "OnPressRecentMsg": "Go To Most Recent Message",
+    "OnPressClearMsg": "Clear Message Count",
+    "OnPressNotification": "Open Notification",
+    "OnPressClearNotification": "Clear Notifications",
+
+    "SrvWidgetWarn": "Server widget must be enabled to track online users",
+
+    "SoundLabel": "Sound",
+    "SoundboardSearch": "Search Results",
+    "SoundboardSearchEmpty": "No Sounds Found",
+    "SoundboardDefaults": "Discord Sounds",
+    "Search": "Search",
+    "Volume": "Volume"
+  }
+}

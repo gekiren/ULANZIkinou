@@ -1,0 +1,115 @@
+{
+  "Name": "Discord",
+  "Description": "Controlar Discord",
+  "Actions": [
+    {
+      "Name": "Silenciar Micrófono",
+      "Tooltip": "Alternar Silenciamiento de Micrófono"
+    },
+    {
+      "Name": "Ensordecer",
+      "Tooltip": "Alternar Sordera"
+    },
+    {
+      "Name": "Canal de Voz",
+      "Tooltip": "Unirse o abandonar un canal de voz"
+    },
+    {
+      "Name": "Canal de Texto",
+      "Tooltip": "Ir a un canal de texto"
+    },
+    {
+      "Name": "Establecer Dispositivo de Áudio",
+      "Tooltip": "Seleccionar su dispositivo de entrada y salida de audio"
+    },
+    {
+      "Name": "Alternar Pulsar para Hablar",
+      "Tooltip": "Alternar entre pulsar para hablar y modo de activación por voz"
+    },
+    {
+      "Name": "Control de Volumen",
+      "Tooltip": "Controlar el volumen de los dispositivos de audio"
+    },
+    {
+      "Name": "Control de Volumen del Usuario",
+      "Tooltip": "Controlar el volumen de los usuarios en el canal de voz"
+    }
+  ],
+  "Localization": {
+    "ClientId": "ID de Cliente",
+    "ClientSecret": "Secreto de Cliente",
+    "AppWarning": "Por favor, inicie o reinicie la aplicación cliente de Discord",
+    "GuideTitle": "Necesita proporcionar un 'ID de Cliente' y 'Secreto de Cliente' para su cuenta de Discord. Para obtener instrucciones sobre cómo hacerlo",
+    "ClickHere": "Haga clic aquí.",
+    "Confirm": "Confirmar",
+    "Connect": "Conectar",
+    "MuteDescription": "Alternar silenciamiento del micrófono al pulsar",
+    "DeafenDescription": "Alternar sordera al pulsar",
+    "TogglePushToTalkDescription": "Alternar pulsar para hablar al pulsar",
+    "AuthWarning": "Autorización de Discord requerida",
+    "AccessLabel": "Autorización",
+    "AccessButton": "Solicitar acceso",
+    "Server": "Servidor",
+    "NoServer": "Sin Servidor",
+    "VoiceChannel": "Canal de Voz",
+    "TextChannel": "Canal de Texto",
+    "NoChannel": "Sin Canal",
+    "Action": "Acción",
+    "PushToTalk": "Pulsar para Hablar",
+    "PushToMute": "Pulsar para Silenciar",
+    "UserVolumeMode": "Modo",
+    "DeviceVolumeMode": "Modo",
+    "UserMuteType": "Tipo de Silenciamiento",
+    "MuteUser": "Silenciar",
+    "UnmuteUser": "Activar Sonido",
+    "ToggleMuteUser": "Alternar Silenciamiento",
+    "MuteDevice": "Silenciar",
+    "AdjustUserVol": "Ajustar",
+    "AdjustDeviceVol": "Ajustar",
+    "SetUserVol": "Establecer",
+    "SetDeviceVol": "Establecer",
+    "UserAdjustMode": "Modo de Ajuste",
+    "UserAdjustAny": "Cualquier Usuario",
+    "UserAdjustSpecific": "Usuario Específico",
+    "VolStepSize": "Tamaño de Paso",
+    "VolSetValue": "Volumen Deseado",
+    "DontDisplay": "No Mostrar",
+    "DoNothing": "No Hacer Nada",
+    "User": "Usuario",
+    "UserNick": "Apodo de usuario",
+    "Users": "Usuarios",
+    "UsersNotFound": "Ningún Usuario Encontrado",
+    "IconStyle": "Estilo de Icono",
+    "IconStatic": "Estático",
+    "IconDynamic": "Dinámico",
+    "IconDynamicH": "Dinámico (Horizontal)",
+    "IconDynamicV": "Dinámico (Vertical)",
+    "IODeviceMode": "Modo",
+    "IODeviceModeInput": "Establecer Entrada",
+    "IODeviceModeOutput": "Establecer Salida",
+    "IODeviceModeBoth": "Establecer Ambos",
+    "IODevice": "Dispositivo",
+    "IODeviceInput": "Entrada",
+    "IODeviceOutput": "Salida",
+    "IODeviceDefault": "Predeterminado",
+    "IODeviceInputNotFound": "Ninguna Entrada Encontrada",
+    "IODeviceOutputNotFound": "Ninguna Salida Encontrada",
+    "SrvStatMsg": "Mensajes",
+    "SrvStatMsgDisplayNew": "Mostrar Recuento de Mensajes Nuevos",
+    "SrvStatUsrOnline": "Mostrar Usuarios En Línea",
+    "SrvStatUsrActive": "Mostrar Usuarios Recientemente Activos",
+    "OnPress": "Al Pulsar",
+    "OnLongPress": "Al Pulsar Prolongadamente",
+    "OnPressRecentMsg": "Ir al Mensaje Más Reciente",
+    "OnPressClearMsg": "Borrar Recuento de Mensajes",
+    "OnPressNotification": "Abrir Notificación",
+    "OnPressClearNotification": "Borrar Notificaciones",
+    "SrvWidgetWarn": "El widget del servidor debe estar habilitado para rastrear usuarios en línea",
+    "SoundLabel": "Sonido",
+    "SoundboardSearch": "Resultados de Búsqueda",
+    "SoundboardSearchEmpty": "Ningún Sonido Encontrado",
+    "SoundboardDefaults": "Sonidos de Discord",
+    "Search": "Buscar",
+    "Volume": "Volumen"
+  }
+}

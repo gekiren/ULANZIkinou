@@ -1,0 +1,142 @@
+{
+  "Author": "Ulanzi",
+  "Name": "Discord",
+  "Description": "Control Discord directly from Ulanzi Deck. Manage audio, channels, and more with ease.",
+  "Category": "Discord",
+  "CategoryIcon": "assets/category.svg",
+  "Version": "1.5.6",
+  "UUID": "com.ulanzi.ulanzideck.discord",
+  "CodePath": "app/index.js",
+  "Icon": "assets/plugin.png",
+  "Type": "JavaScript",
+  "PrivateAPI": true,
+  "OS": [
+    { "MinimumVersion": "10.11", "Platform": "mac" },
+    { "MinimumVersion": "10", "Platform": "windows" }
+  ],
+  "Software": { "MinVersion": "2.1.0" },
+  "Actions": [
+    {
+      "Icon": "assets/icons/mute_white.svg",
+      "Name": "Mute",
+      "States": [
+        {
+          "Image": "assets/actions/mute_0.svg",
+          "Name": "Mute"
+        },
+        {
+          "Image": "assets/actions/mute_1.svg",
+          "Name": "Unmute"
+        }
+      ],
+      "Tooltip": "",
+      "UUID": "com.ulanzi.ulanzideck.discord.mute",
+      "PropertyInspectorPath": "property-inspectors/mute/index.html"
+    },
+    {
+      "Icon": "assets/icons/deafen_white.svg",
+      "Name": "Deafen",
+      "States": [
+        {
+          "Image": "assets/actions/deafen_0.svg",
+          "Name": "Deafen"
+        },
+        {
+          "Image": "assets/actions/deafen_1.svg",
+          "Name": "Undeafen"
+        }
+      ],
+      "Tooltip": "",
+      "UUID": "com.ulanzi.ulanzideck.discord.deafen",
+      "PropertyInspectorPath": "property-inspectors/deafen/index.html"
+    },
+    {
+      "Icon": "assets/icons/voicechannel_white.svg",
+      "Name": "Voice Channel",
+      "States": [
+        {
+          "Image": "assets/actions/voicechannel_0.svg",
+          "Name": "Enter"
+        },
+        {
+          "Image": "assets/actions/voicechannel_1.svg",
+          "Name": "Leave"
+        }
+      ],
+      "Tooltip": "",
+      "UUID": "com.ulanzi.ulanzideck.discord.voicechannel",
+      "PropertyInspectorPath": "property-inspectors/voice-channel/index.html"
+    },
+    {
+      "Icon": "assets/icons/textchannel_white.svg",
+      "Name": "Text Channel",
+      "States": [
+        {
+          "Image": "assets/actions/textchannel.svg",
+          "Name": "Enter"
+        }
+      ],
+      "Tooltip": "",
+      "UUID": "com.ulanzi.ulanzideck.discord.textchannel",
+      "PropertyInspectorPath": "property-inspectors/text-channel/index.html"
+    },
+    {
+      "Icon": "assets/icons/setAudioDevice.svg",
+      "Name": "Set Audio Device",
+      "States": [
+        {
+          "Image": "assets/actions/headphonesAndMicrophone.svg"
+        },
+        {
+          "Image": "assets/actions/headphonesAndMicrophone_1.svg"
+        }
+      ],
+      "Tooltip": "Select your audio input and output device",
+      "UUID": "com.ulanzi.ulanzideck.discord.setaudiodevice",
+      "PropertyInspectorPath": "property-inspectors/set-audio-device/index.html"
+    },
+    {
+      "Icon": "assets/icons/togglePushToTalk.svg",
+      "Name": "Voice Input Mode Toggle",
+      "States": [
+        {
+          "Image": "assets/actions/ptttoggle_0.svg",
+          "Name": "Voice Activity"
+        },
+        {
+          "Image": "assets/actions/ptttoggle_1.svg",
+          "Name": "Push to Talk"
+        }
+      ],
+      "Tooltip": "Toggle push to talk mode",
+      "UUID": "com.ulanzi.ulanzideck.discord.togglepushtotalk",
+      "PropertyInspectorPath": "property-inspectors/toggle-push-to-talk/index.html"
+    },
+    {
+      "Icon": "assets/icons/volumeControl.svg",
+      "Name": "Volume Control",
+      "States": [
+        {
+          "Image": "assets/actions/volumeControl.svg"
+        }
+      ],
+      "Tooltip": "Control the volume of audio devices",
+      "UUID": "com.ulanzi.ulanzideck.discord.volumecontrol",
+      "Controllers": ["Encoder", "Keypad"],
+      "PropertyInspectorPath": "property-inspectors/volume-control/index.html"
+    },
+    {
+      "Icon": "assets/icons/userVolumeControl.svg",
+      "Name": "User Voice Control",
+      "States": [
+        {
+          "Image": "assets/actions/userVolumeControl.svg"
+        }
+      ],
+      "Tooltip": "Control the volume of users in voice channel",
+      "UUID": "com.ulanzi.ulanzideck.discord.uservoicecontrol",
+      "Controllers": ["Encoder", "Keypad"],
+      "PropertyInspectorPath": "property-inspectors/user-voice-control/index.html"
+    }
+  ]
+}

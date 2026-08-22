@@ -1,0 +1,126 @@
+{
+  "Name": "Discord",
+  "Description": "Discord steuern",
+  "Actions": [
+    {
+      "Name": "Stummschalten",
+      "Tooltip": "Mikrofonstummschaltung umschalten"
+    },
+    {
+      "Name": "Taubschalten",
+      "Tooltip": "Taubschaltung umschalten"
+    },
+    {
+      "Name": "Sprachkanal",
+      "Tooltip": "Einem Sprachkanal beitreten oder verlassen"
+    },
+    {
+      "Name": "Textkanal",
+      "Tooltip": "Zu einem Textkanal wechseln"
+    },
+    {
+      "Name": "Audiogerät festlegen",
+      "Tooltip": "Audio-Eingabe- und Ausgabegerät auswählen"
+    },
+    {
+      "Name": "Push-to-Talk umschalten",
+      "Tooltip": "Zwischen Push-to-Talk und Sprachaktivierung umschalten"
+    },
+    {
+      "Name": "Lautstärkeregelung",
+      "Tooltip": "Lautstärke von Audiogeräten regeln"
+    }
+  ],
+  "Localization": {
+    "ClientId": "Client-ID",
+    "ClientSecret": "Client-Secret",
+    "AppWarning": "Bitte Discord-Client-App starten oder neu starten",
+    "GuideTitle": "Sie müssen eine „Client Id“ und ein „Client Secret“ für Ihr Discord-Konto angeben. Anweisungen dazu, wie Sie diese erhalten:",
+    "ClickHere": "Klicken Sie hier.",
+    "Confirm": "Bestätigen",
+    "Connect": "Verbinden",
+    "MuteDescription": "Mikrofonstummschaltung bei Tastendruck umschalten",
+    "DeafenDescription": "Taubschaltung bei Tastendruck umschalten",
+    "TogglePushToTalkDescription": "Push-to-Talk bei Tastendruck umschalten",
+    "AuthWarning": "Discord-Autorisierung erforderlich",
+    "AccessLabel": "Autorisierung",
+    "AccessButton": "Zugriff anfordern",
+    "Server": "Server",
+    "NoServer": "Kein Server",
+    "VoiceChannel": "Sprachkanal",
+    "TextChannel": "Textkanal",
+    "NoChannel": "Kein Kanal",
+    "Action": "Aktion",
+    "PushToTalk": "Push-to-Talk",
+    "PushToMute": "Push-to-Mute",
+
+    "UserVolumeMode": "Modus",
+    "DeviceVolumeMode": "Modus",
+
+    "UserMuteType": "Stummschalt-Typ",
+    "MuteUser": "Stummschalten",
+    "UnmuteUser": "Stummschaltung aufheben",
+    "ToggleMuteUser": "Stummschaltung umschalten",
+
+    "MuteDevice": "Stummschalten",
+    "AdjustUserVol": "Anpassen",
+    "AdjustDeviceVol": "Anpassen",
+    "SetUserVol": "Einstellen",
+    "SetDeviceVol": "Einstellen",
+
+    "UserAdjustMode": "Anpassungsmodus",
+    "UserAdjustAny": "Beliebiger Benutzer",
+    "UserAdjustSpecific": "Bestimmter Benutzer",
+
+    "VolStepSize": "Schrittgröße",
+    "VolSetValue": "Gewünschte Lautstärke",
+
+    "DontDisplay": "Nicht anzeigen",
+    "DoNothing": "Nichts tun",
+
+    "User": "Benutzer",
+    "UserNick": "Benutzername",
+    "Users": "Benutzer",
+    "UsersNotFound": "Keine Benutzer gefunden",
+
+    "IconStyle": "Symbolstil",
+    "IconStatic": "Statisch",
+    "IconDynamic": "Dynamisch",
+    "IconDynamicH": "Dynamisch (Horizontal)",
+    "IconDynamicV": "Dynamisch (Vertikal)",
+
+    "IODeviceMode": "Modus",
+    "IODeviceModeInput": "Eingabe festlegen",
+    "IODeviceModeOutput": "Ausgabe festlegen",
+    "IODeviceModeBoth": "Beides festlegen",
+
+    "IODevice": "Gerät",
+    "IODeviceInput": "Eingabe",
+    "IODeviceOutput": "Ausgabe",
+    "IODeviceDefault": "Standard",
+    "IODeviceInputNotFound": "Keine Eingabegeräte gefunden",
+    "IODeviceOutputNotFound": "Keine Ausgabegeräte gefunden",
+
+    "SrvStatMsg": "Nachrichten",
+    "SrvStatMsgDisplayNew": "Anzahl neuer Nachrichten anzeigen",
+
+    "SrvStatUsrOnline": "Online-Benutzer anzeigen",
+    "SrvStatUsrActive": "Zuletzt aktive Benutzer anzeigen",
+
+    "OnPress": "Bei Tastendruck",
+    "OnLongPress": "Bei langem Tastendruck",
+    "OnPressRecentMsg": "Zur letzten Nachricht wechseln",
+    "OnPressClearMsg": "Nachrichtenzähler löschen",
+    "OnPressNotification": "Benachrichtigung öffnen",
+    "OnPressClearNotification": "Benachrichtigungen löschen",
+
+    "SrvWidgetWarn": "Server-Widget muss aktiviert sein, um Online-Benutzer zu verfolgen",
+
+    "SoundLabel": "Sound",
+    "SoundboardSearch": "Suchergebnisse",
+    "SoundboardSearchEmpty": "Keine Sounds gefunden",
+    "SoundboardDefaults": "Discord-Sounds",
+    "Search": "Suchen",
+    "Volume": "Lautstärke"
+  }
+}

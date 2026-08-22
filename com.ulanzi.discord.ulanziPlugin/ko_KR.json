@@ -1,0 +1,115 @@
+{
+  "Name": "Discord",
+  "Description": "Discord 제어",
+  "Actions": [
+    {
+      "Name": "음소거",
+      "Tooltip": "마이크 음소거 전환"
+    },
+    {
+      "Name": "청각 차단",
+      "Tooltip": "청각 차단 전환"
+    },
+    {
+      "Name": "음성 채널",
+      "Tooltip": "음성 채널에 들어가거나 나가기"
+    },
+    {
+      "Name": "텍스트 채널",
+      "Tooltip": "텍스트 채널로 이동"
+    },
+    {
+      "Name": "오디오 장치 설정",
+      "Tooltip": "오디오 입출력 장치 선택"
+    },
+    {
+      "Name": "말하기 버튼식 전환",
+      "Tooltip": "말하기 버튼식과 음성 감지 모드 간 전환"
+    },
+    {
+      "Name": "볼륨 제어",
+      "Tooltip": "오디오 장치 볼륨 제어"
+    },
+    {
+      "Name": "사용자 볼륨 제어",
+      "Tooltip": "음성 채널의 사용자 볼륨 제어"
+    }
+  ],
+  "Localization": {
+    "ClientId": "클라이언트 ID",
+    "ClientSecret": "클라이언트 비밀",
+    "AppWarning": "Discord 클라이언트 앱을 시작하거나 재시작해주세요",
+    "GuideTitle": "Discord 계정에 '클라이언트 ID'와 '클라이언트 비밀'을 제공해야 합니다. 이를 얻는 방법에 대한 지침은",
+    "ClickHere": "여기를 클릭하세요.",
+    "Confirm": "확인",
+    "Connect": "연결",
+    "MuteDescription": "누르면 마이크 음소거 전환",
+    "DeafenDescription": "누르면 청각 차단 전환",
+    "TogglePushToTalkDescription": "누르면 말하기 버튼식 전환",
+    "AuthWarning": "Discord 인증 필요",
+    "AccessLabel": "인증",
+    "AccessButton": "액세스 요청",
+    "Server": "서버",
+    "NoServer": "서버 없음",
+    "VoiceChannel": "음성 채널",
+    "TextChannel": "텍스트 채널",
+    "NoChannel": "채널 없음",
+    "Action": "작업",
+    "PushToTalk": "말하기 버튼식",
+    "PushToMute": "누르면 음소거",
+    "UserVolumeMode": "모드",
+    "DeviceVolumeMode": "모드",
+    "UserMuteType": "음소거 유형",
+    "MuteUser": "음소거",
+    "UnmuteUser": "음소거 해제",
+    "ToggleMuteUser": "음소거 전환",
+    "MuteDevice": "음소거",
+    "AdjustUserVol": "조정",
+    "AdjustDeviceVol": "조정",
+    "SetUserVol": "설정",
+    "SetDeviceVol": "설정",
+    "UserAdjustMode": "조정 모드",
+    "UserAdjustAny": "모든 사용자",
+    "UserAdjustSpecific": "특정 사용자",
+    "VolStepSize": "단계 크기",
+    "VolSetValue": "원하는 볼륨",
+    "DontDisplay": "표시 안 함",
+    "DoNothing": "작업 없음",
+    "User": "사용자",
+    "UserNick": "사용자 닉네임",
+    "Users": "사용자",
+    "UsersNotFound": "찾은 사용자 없음",
+    "IconStyle": "아이콘 스타일",
+    "IconStatic": "정적",
+    "IconDynamic": "동적",
+    "IconDynamicH": "동적 (가로)",
+    "IconDynamicV": "동적 (세로)",
+    "IODeviceMode": "모드",
+    "IODeviceModeInput": "입력 설정",
+    "IODeviceModeOutput": "출력 설정",
+    "IODeviceModeBoth": "둘 다 설정",
+    "IODevice": "장치",
+    "IODeviceInput": "입력",
+    "IODeviceOutput": "출력",
+    "IODeviceDefault": "기본값",
+    "IODeviceInputNotFound": "찾은 입력 장치 없음",
+    "IODeviceOutputNotFound": "찾은 출력 장치 없음",
+    "SrvStatMsg": "메시지",
+    "SrvStatMsgDisplayNew": "새 메시지 수 표시",
+    "SrvStatUsrOnline": "온라인 사용자 표시",
+    "SrvStatUsrActive": "최근 활동 사용자 표시",
+    "OnPress": "누를 때",
+    "OnLongPress": "길게 누를 때",
+    "OnPressRecentMsg": "최근 메시지로 이동",
+    "OnPressClearMsg": "메시지 수 초기화",
+    "OnPressNotification": "알림 열기",
+    "OnPressClearNotification": "알림 초기화",
+    "SrvWidgetWarn": "온라인 사용자를 추적하려면 서버 위젯이 활성화되어야 합니다",
+    "SoundLabel": "사운드",
+    "SoundboardSearch": "검색 결과",
+    "SoundboardSearchEmpty": "찾은 사운드 없음",
+    "SoundboardDefaults": "Discord 기본 사운드",
+    "Search": "검색",
+    "Volume": "볼륨"
+  }
+}

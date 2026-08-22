@@ -1,0 +1,111 @@
+{
+  "Name": "Discord",
+  "Description": "Discordを操作",
+  "Actions": [
+    {
+      "Name": "マイクミュート",
+      "Tooltip": "マイクミュートを切り替えます"
+    },
+    {
+      "Name": "スピーカーミュート",
+      "Tooltip": "スピーカーミュートを切り替えます"
+    },
+    {
+      "Name": "ボイスチャンネル",
+      "Tooltip": "ボイスチャンネルに参加または退出します"
+    },
+    {
+      "Name": "テキストチャンネル",
+      "Tooltip": "テキストチャンネルに移動します"
+    },
+    {
+      "Name": "オーディオデバイス設定",
+      "Tooltip": "オーディオ入力・出力デバイスを選択します"
+    },
+    {
+      "Name": "音声入力モード切り替え",
+      "Tooltip": "「プッシュトゥトーク」と「音声検出」モードを切り替えます"
+    },
+    {
+      "Name": "音量コントロール",
+      "Tooltip": "オーディオデバイスの音量を調整します"
+    }
+  ],
+  "Localization": {
+    "ClientId": "ClientId",
+    "ClientSecret": "ClientSecret",
+    "AppWarning": "Discordクライアントを起動または再起動してください",
+    "GuideTitle": "Discordアカウント用の「Client Id」と「Client Secret」を提供する必要があります。取得方法の説明はこちら：",
+    "ClickHere": "ここをクリックしてください。",
+    "Confirm": "確認",
+    "Connect": "接続",
+    "MuteDescription": "押してマイクミュートを切り替えます",
+    "DeafenDescription": "押してスピーカーミュートを切り替えます",
+    "TogglePushToTalkDescription": "押して音声入力モードを切り替えます",
+    "AuthWarning": "Discordの認証が必要です",
+    "AccessLabel": "認証",
+    "AccessButton": "アクセス許可をリクエスト",
+    "Server": "サーバー",
+    "NoServer": "サーバーなし",
+    "VoiceChannel": "ボイスチャンネル",
+    "TextChannel": "テキストチャンネル",
+    "NoChannel": "チャンネルなし",
+    "Action": "アクション",
+    "PushToTalk": "プッシュトゥトーク",
+    "PushToMute": "プッシュトゥミュート",
+    "UserVolumeMode": "ユーザー音量モード",
+    "DeviceVolumeMode": "デバイス音量モード",
+    "UserMuteType": "ユーザーミュートタイプ",
+    "MuteUser": "ユーザーをミュート",
+    "UnmuteUser": "ユーザーのミュート解除",
+    "ToggleMuteUser": "ユーザーミュート切り替え",
+    "MuteDevice": "デバイスをミュート",
+    "AdjustUserVol": "ユーザー音量調整",
+    "AdjustDeviceVol": "デバイス音量調整",
+    "SetUserVol": "ユーザー音量設定",
+    "SetDeviceVol": "デバイス音量設定",
+    "UserAdjustMode": "ユーザー調整モード",
+    "UserAdjustAny": "任意のユーザー",
+    "UserAdjustSpecific": "特定のユーザー",
+    "VolStepSize": "音量ステップ",
+    "VolSetValue": "目標音量",
+    "DontDisplay": "表示しない",
+    "DoNothing": "何もしない",
+    "User": "ユーザー",
+    "UserNick": "ユーザーニックネーム",
+    "Users": "ユーザー",
+    "UsersNotFound": "ユーザーが見つかりません",
+    "IconStyle": "アイコンスタイル",
+    "IconStatic": "静的",
+    "IconDynamic": "動的",
+    "IconDynamicH": "動的（水平）",
+    "IconDynamicV": "動的（垂直）",
+    "IODeviceMode": "入出力デバイスモード",
+    "IODeviceModeInput": "入力デバイス設定",
+    "IODeviceModeOutput": "出力デバイス設定",
+    "IODeviceModeBoth": "両方を設定",
+    "IODevice": "入出力デバイス",
+    "IODeviceInput": "入力",
+    "IODeviceOutput": "出力",
+    "IODeviceDefault": "デフォルト",
+    "IODeviceInputNotFound": "入力デバイスが見つかりません",
+    "IODeviceOutputNotFound": "出力デバイスが見つかりません",
+    "SrvStatMsg": "メッセージ",
+    "SrvStatMsgDisplayNew": "新着メッセージ数を表示",
+    "SrvStatUsrOnline": "オンラインユーザーを表示",
+    "SrvStatUsrActive": "アクティブユーザーを表示",
+    "OnPress": "プレス時",
+    "OnLongPress": "長押し時",
+    "OnPressRecentMsg": "最新メッセージへ移動",
+    "OnPressClearMsg": "メッセージ数をクリア",
+    "OnPressNotification": "通知を開く",
+    "OnPressClearNotification": "通知をクリア",
+    "SrvWidgetWarn": "オンラインユーザーを追跡するにはサーバーウィジェットを有効にする必要があります",
+    "SoundLabel": "サウンド",
+    "SoundboardSearch": "サウンドボード検索結果",
+    "SoundboardSearchEmpty": "サウンドが見つかりません",
+    "SoundboardDefaults": "Discordデフォルトサウンド",
+    "Search": "検索",
+    "Volume": "音量"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "Name": "Discord",
+  "Description": "控制 Discord",
+  "Actions": [
+    {
+      "Name": "麥克風靜音",
+      "Tooltip": "切換麥克風靜音"
+    },
+    {
+      "Name": "收聽靜音",
+      "Tooltip": "切換收聽靜音 (Deafen)"
+    },
+    {
+      "Name": "語音頻道",
+      "Tooltip": "加入或離開語音頻道"
+    },
+    {
+      "Name": "文字頻道",
+      "Tooltip": "前往文字頻道"
+    },
+    {
+      "Name": "設定音訊裝置",
+      "Tooltip": "選擇你的音訊輸入和輸出裝置"
+    },
+    {
+      "Name": "切換語音輸入模式",
+      "Tooltip": "在「按鍵發話」與「語音感應」模式之間切換"
+    },
+    {
+      "Name": "音量控制",
+      "Tooltip": "控制音訊裝置音量"
+    }
+  ],
+  "Localization": {
+    "ClientId": "ClientId",
+    "ClientSecret": "ClientSecret",
+    "AppWarning": "請啟動或重新啟動 Discord 用戶端",
+    "GuideTitle": "您需要為您的 Discord 帳戶提供「Client Id」和「Client Secret」。有關獲取方法的說明：",
+    "ClickHere": "點擊此處。",
+    "Confirm": "確定",
+    "Connect": "連接",
+    "MuteDescription": "按下以切換麥克風靜音狀態",
+    "DeafenDescription": "按下以切換收聽靜音狀態 (Deafen)",
+    "TogglePushToTalkDescription": "按下以切換語音輸入模式",
+    "AuthWarning": "需要 Discord 授權",
+    "AccessLabel": "授權",
+    "AccessButton": "請求存取權限",
+    "Server": "伺服器",
+    "NoServer": "沒有伺服器",
+    "VoiceChannel": "語音頻道",
+    "TextChannel": "文字頻道",
+    "NoChannel": "沒有頻道",
+    "Action": "操作",
+    "PushToTalk": "按鍵發話",
+    "PushToMute": "按鍵靜音",
+    "UserVolumeMode": "模式",
+    "DeviceVolumeMode": "模式",
+    "UserMuteType": "靜音類型",
+    "MuteUser": "設為靜音",
+    "UnmuteUser": "取消靜音",
+    "ToggleMuteUser": "切換靜音",
+    "MuteDevice": "靜音",
+    "AdjustUserVol": "調整",
+    "AdjustDeviceVol": "調整",
+    "SetUserVol": "設定",
+    "SetDeviceVol": "設定",
+    "UserAdjustMode": "調整模式",
+    "UserAdjustAny": "任何用戶",
+    "UserAdjustSpecific": "特定用戶",
+    "VolStepSize": "調整幅度",
+    "VolSetValue": "目標音量",
+    "DontDisplay": "不顯示",
+    "DoNothing": "不執行任何操作",
+    "User": "用戶",
+    "UserNick": "用戶暱稱",
+    "Users": "用戶",
+    "UsersNotFound": "找不到用戶",
+    "IconStyle": "圖示樣式",
+    "IconStatic": "靜態",
+    "IconDynamic": "動態",
+    "IconDynamicH": "動態（水平）",
+    "IconDynamicV": "動態（垂直）",
+    "IODeviceMode": "模式",
+    "IODeviceModeInput": "設定輸入裝置",
+    "IODeviceModeOutput": "設定輸出裝置",
+    "IODeviceModeBoth": "設定兩者",
+    "IODevice": "裝置",
+    "IODeviceInput": "輸入",
+    "IODeviceOutput": "輸出",
+    "IODeviceDefault": "預設",
+    "IODeviceInputNotFound": "找不到輸入裝置",
+    "IODeviceOutputNotFound": "找不到輸出裝置",
+    "SrvStatMsg": "訊息",
+    "SrvStatMsgDisplayNew": "顯示新訊息計數",
+    "SrvStatUsrOnline": "顯示線上用戶",
+    "SrvStatUsrActive": "顯示近期活躍用戶",
+    "OnPress": "按下時",
+    "OnLongPress": "長按時",
+    "OnPressRecentMsg": "前往最近訊息",
+    "OnPressClearMsg": "清除訊息計數",
+    "OnPressNotification": "開啟通知",
+    "OnPressClearNotification": "清除通知",
+    "SrvWidgetWarn": "必須啟用伺服器小工具才能追蹤線上用戶",
+    "SoundLabel": "聲音",
+    "SoundboardSearch": "搜尋結果",
+    "SoundboardSearchEmpty": "找不到聲音",
+    "SoundboardDefaults": "Discord 內建聲音",
+    "Search": "搜尋",
+    "Volume": "音量"
+  }
+}
