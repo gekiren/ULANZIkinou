@@ -115,4 +115,4 @@ $UD.onRun(async (jsn) => {
 });
 
 // Ulanzi Studio 接続開始
-$UD.connect('com.ulanzi.ulanzistudio.apprestart');
+$UD.connect('com.ulanzi.apprestart');
