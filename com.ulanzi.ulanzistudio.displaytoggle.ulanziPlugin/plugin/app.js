@@ -68,14 +68,13 @@ async function updateUI(context, status) {
   if (!config) return;
 
   const isExtend = status === 'Extend';
-  const relativeIconPath = isExtend ? 'assets/extend.png' : 'assets/pc_only.png';
-  const iconPath = path.join(__dirname, '..', relativeIconPath).replace(/\\/g, '/');
+  const iconRelPath = isExtend ? 'assets/extend.png' : 'assets/pc_only.png';
   const labelText = isExtend ? 'Extend' : 'PC Only';
 
   if (config.lastStatus !== status) {
     console.log(`[DisplayToggle] Updating UI for ${context}: State=${status}`);
     config.lastStatus = status;
-    $UD.setPathIcon(context, iconPath, labelText);
+    $UD.setPathIcon(context, iconRelPath, labelText);
   }
 }
 
