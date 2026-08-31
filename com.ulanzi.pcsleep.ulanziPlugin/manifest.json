@@ -17,7 +17,7 @@
       "States": [
         {
           "Name": "Sleep",
-          "Image": "assets/icon.png"
+          "Image": "assets/actionDefaultImage.png"
         }
       ]
     }
