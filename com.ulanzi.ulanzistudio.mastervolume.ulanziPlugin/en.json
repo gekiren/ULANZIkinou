@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Volume Control",
+  "Description": "Master Volume and Active Window Volume Control with Realtime Display",
+  "Actions": [
+    {
+      "Name": "Master Volume",
+      "Tooltip": "Control Master Volume"
+    },
+    {
+      "Name": "Active Window Volume",
+      "Tooltip": "Control the volume of the active window"
+    }
+  ]
+}
