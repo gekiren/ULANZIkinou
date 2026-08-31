@@ -1,14 +1,26 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
 const logPath = path.join(__dirname, 'debug.log');
 
+function rotateLogIfNeeded() {
+  try {
+    if (fs.existsSync(logPath)) {
+      const stats = fs.statSync(logPath);
+      if (stats.size > 1024 * 1024) { // 1MB limit
+        fs.writeFileSync(logPath, ''); // Clear file
+      }
+    }
+  } catch (e) {}
+}
+
 const originalLog = console.log;
 const originalError = console.error;
 
 console.log = function (...args) {
-  const msg = `[LOG] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [LOG]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -16,7 +28,8 @@ console.log = function (...args) {
 };
 
 console.error = function (...args) {
-  const msg = `[ERR] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [ERR]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -41,7 +54,7 @@ const $UD = new UlanziNodeApi();
 
 const SETTINGS_CACHE = {};
 
-// アクションUUID定数 (msg.uuid に送られてくる)
+// 繧｢繧ｯ繧ｷ繝ｧ繝ｳUUID螳壽焚 (msg.uuid 縺ｫ騾√ｉ繧後※縺上ｋ)
 const ACTION_MASTER  = 'com.ulanzi.ulanzistudio.mastervolume.control';
 const ACTION_APPVOL  = 'com.ulanzi.ulanzistudio.mastervolume.appvolume';
 
@@ -230,7 +243,7 @@ async function syncFromSystem(context) {
         config.appName = appName;
 
         if (appVol < 0) {
-          // セッションなし → マスター音量にフォールバック
+          // 繧ｻ繝・す繝ｧ繝ｳ縺ｪ縺・竊・繝槭せ繧ｿ繝ｼ髻ｳ驥上↓繝輔か繝ｼ繝ｫ繝舌ャ繧ｯ
           const device = config.device || "default";
           config.currentVolume = await getVolume(device);
           config.currentMute = await getMute(device);
@@ -398,7 +411,7 @@ $UD.onDialRotate(async (jsn) => {
   const event = jsn.rotateEvent;
   console.log(`[app.js] Dial rotate event for ${context}: ${event}, isAppMode=${isAppMode}`);
 
-  // アプリモードの場合、回した瞬間にも最新のフォアグラウンドアプリ情報を取得
+  // 繧｢繝励Μ繝｢繝ｼ繝峨・蝣ｴ蜷医∝屓縺励◆迸ｬ髢薙↓繧よ怙譁ｰ縺ｮ繝輔か繧｢繧ｰ繝ｩ繧ｦ繝ｳ繝峨い繝励Μ諠・ｱ繧貞叙蠕・
   if (isAppMode) {
     const appName = await getForegroundAppName();
     const appVol = await getForegroundVolume();
@@ -469,3 +482,4 @@ $UD.onDialDown(async (jsn) => {
     console.error("[app.js] Failed to toggle mute:", err);
   }
 });
+

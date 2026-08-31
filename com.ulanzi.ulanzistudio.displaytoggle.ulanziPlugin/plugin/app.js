@@ -1,14 +1,26 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
 const logPath = path.join(__dirname, 'debug.log');
 
+function rotateLogIfNeeded() {
+  try {
+    if (fs.existsSync(logPath)) {
+      const stats = fs.statSync(logPath);
+      if (stats.size > 1024 * 1024) { // 1MB limit
+        fs.writeFileSync(logPath, ''); // Clear file
+      }
+    }
+  } catch (e) {}
+}
+
 const originalLog = console.log;
 const originalError = console.error;
 
 console.log = function (...args) {
-  const msg = `[LOG] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [LOG]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -16,7 +28,8 @@ console.log = function (...args) {
 };
 
 console.error = function (...args) {
-  const msg = `[ERR] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [ERR]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -42,7 +55,7 @@ const $UD = new UlanziNodeApi();
 const SETTINGS_CACHE = {};
 let pollingTimer = null;
 
-// PowerShell実行ラッパー
+// PowerShell螳溯｡後Λ繝・ヱ繝ｼ
 function runPowerShell(action) {
   return new Promise((resolve, reject) => {
     const system32 = process.env.SystemRoot ? path.join(process.env.SystemRoot, 'System32') : 'C:\\Windows\\System32';
@@ -62,7 +75,7 @@ function runPowerShell(action) {
   });
 }
 
-// UI更新処理
+// UI譖ｴ譁ｰ蜃ｦ逅・
 async function updateUI(context, status) {
   const config = SETTINGS_CACHE[context];
   if (!config) return;
@@ -78,11 +91,11 @@ async function updateUI(context, status) {
   }
 }
 
-// システムの状態を取得して同期
+// 繧ｷ繧ｹ繝・Β縺ｮ迥ｶ諷九ｒ蜿門ｾ励＠縺ｦ蜷梧悄
 async function syncFromSystem(context) {
   const config = SETTINGS_CACHE[context];
   if (config && config.simulationMode) {
-    return; // シミュレーションモード時はシステムからの同期をスキップ
+    return; // 繧ｷ繝溘Η繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繝｢繝ｼ繝画凾縺ｯ繧ｷ繧ｹ繝・Β縺九ｉ縺ｮ蜷梧悄繧偵せ繧ｭ繝・・
   }
   try {
     const status = await runPowerShell('GetStatus');
@@ -92,7 +105,7 @@ async function syncFromSystem(context) {
   }
 }
 
-// すべてのアクティブなキーを同期
+// 縺吶∋縺ｦ縺ｮ繧｢繧ｯ繝・ぅ繝悶↑繧ｭ繝ｼ繧貞酔譛・
 async function syncAll() {
   const keys = Object.keys(SETTINGS_CACHE);
   for (const context of keys) {
@@ -102,16 +115,16 @@ async function syncAll() {
   }
 }
 
-// ポーリングの開始
+// 繝昴・繝ｪ繝ｳ繧ｰ縺ｮ髢句ｧ・
 function startPolling() {
   if (pollingTimer) return;
   console.log("[DisplayToggle] Starting system status polling...");
   pollingTimer = setInterval(async () => {
     await syncAll();
-  }, 3000); // 3秒周期
+  }, 3000); // 3遘貞捉譛・
 }
 
-// ポーリングの停止
+// 繝昴・繝ｪ繝ｳ繧ｰ縺ｮ蛛懈ｭ｢
 function stopPolling() {
   if (!pollingTimer) return;
   console.log("[DisplayToggle] Stopping system status polling...");
@@ -119,12 +132,12 @@ function stopPolling() {
   pollingTimer = null;
 }
 
-// 接続完了イベント
+// 謗･邯壼ｮ御ｺ・う繝吶Φ繝・
 $UD.onConnected(() => {
   console.log("[app.js] Display Toggle plugin connected to Ulanzi Studio");
 });
 
-// キー追加イベント
+// 繧ｭ繝ｼ霑ｽ蜉繧､繝吶Φ繝・
 $UD.onAdd(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action added: ${context}`);
@@ -140,7 +153,7 @@ $UD.onAdd(async (jsn) => {
   startPolling();
 });
 
-// キーアクティブ状態変更イベント
+// 繧ｭ繝ｼ繧｢繧ｯ繝・ぅ繝也憾諷句､画峩繧､繝吶Φ繝・
 $UD.onSetActive(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action SetActive: ${context}, active: ${jsn.active}`);
@@ -159,7 +172,7 @@ $UD.onSetActive(async (jsn) => {
   }
 });
 
-// キー削除イベント
+// 繧ｭ繝ｼ蜑企勁繧､繝吶Φ繝・
 $UD.onClear((jsn) => {
   if (jsn.param) {
     jsn.param.forEach(p => {
@@ -172,7 +185,7 @@ $UD.onClear((jsn) => {
   }
 });
 
-// キー押下イベント (トグル処理)
+// 繧ｭ繝ｼ謚ｼ荳九う繝吶Φ繝・(繝医げ繝ｫ蜃ｦ逅・
 $UD.onRun(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action run (toggle display) for context: ${context}`);
@@ -194,7 +207,7 @@ $UD.onRun(async (jsn) => {
   }
 });
 
-// 設定更新イベント受信時のキャッシュ更新
+// 險ｭ螳壽峩譁ｰ繧､繝吶Φ繝亥女菫｡譎ゅ・繧ｭ繝｣繝・す繝･譖ｴ譁ｰ
 $UD.on('didReceiveSettings', (jsn) => {
   const context = `${jsn.uuid}___${jsn.key}___${jsn.actionid}`;
   console.log(`[app.js] didReceiveSettings for ${context}:`, jsn.settings);
@@ -203,5 +216,6 @@ $UD.on('didReceiveSettings', (jsn) => {
   }
 });
 
-// Ulanzi Studio 接続開始
+// Ulanzi Studio 謗･邯夐幕蟋・
 $UD.connect('com.ulanzi.ulanzistudio.displaytoggle');
+

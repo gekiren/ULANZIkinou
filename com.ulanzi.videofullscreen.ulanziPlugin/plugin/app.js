@@ -1,14 +1,26 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
 const logPath = path.join(__dirname, 'debug.log');
 
+function rotateLogIfNeeded() {
+  try {
+    if (fs.existsSync(logPath)) {
+      const stats = fs.statSync(logPath);
+      if (stats.size > 1024 * 1024) { // 1MB limit
+        fs.writeFileSync(logPath, ''); // Clear file
+      }
+    }
+  } catch (e) {}
+}
+
 const originalLog = console.log;
 const originalError = console.error;
 
 console.log = function (...args) {
-  const msg = `[LOG] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [LOG]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -16,7 +28,8 @@ console.log = function (...args) {
 };
 
 console.error = function (...args) {
-  const msg = `[ERR] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [ERR]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -103,3 +116,4 @@ $UD.onRun(async (jsn) => {
 });
 
 $UD.connect('com.ulanzi.videofullscreen');
+

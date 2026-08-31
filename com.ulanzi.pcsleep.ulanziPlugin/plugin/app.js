@@ -1,14 +1,26 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
 const logPath = path.join(__dirname, 'debug.log');
 
+function rotateLogIfNeeded() {
+  try {
+    if (fs.existsSync(logPath)) {
+      const stats = fs.statSync(logPath);
+      if (stats.size > 1024 * 1024) { // 1MB limit
+        fs.writeFileSync(logPath, ''); // Clear file
+      }
+    }
+  } catch (e) {}
+}
+
 const originalLog = console.log;
 const originalError = console.error;
 
 console.log = function (...args) {
-  const msg = `[LOG] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [LOG]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -16,7 +28,8 @@ console.log = function (...args) {
 };
 
 console.error = function (...args) {
-  const msg = `[ERR] ${new Date().toISOString()}: ` + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
+  rotateLogIfNeeded();
+  const msg = [ERR]  + new Date().toISOString() + :  + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ') + '\n';
   try {
     fs.appendFileSync(logPath, msg);
   } catch (e) {}
@@ -41,7 +54,7 @@ const $UD = new UlanziNodeApi();
 
 const SETTINGS_CACHE = {};
 
-// PowerShell実行ラッパー
+// PowerShell螳溯｡後Λ繝・ヱ繝ｼ
 function runPowerShellSleep() {
   return new Promise((resolve, reject) => {
     const system32 = process.env.SystemRoot ? path.join(process.env.SystemRoot, 'System32') : 'C:\\Windows\\System32';
@@ -62,17 +75,17 @@ function runPowerShellSleep() {
   });
 }
 
-// エラーイベントハンドリング (未処理エラーによるクラッシュ防止)
+// 繧ｨ繝ｩ繝ｼ繧､繝吶Φ繝医ワ繝ｳ繝峨Μ繝ｳ繧ｰ (譛ｪ蜃ｦ逅・お繝ｩ繝ｼ縺ｫ繧医ｋ繧ｯ繝ｩ繝・す繝･髦ｲ豁｢)
 $UD.on('error', (err) => {
   console.error("[app.js] WebSocket API Error:", err);
 });
 
-// 接続完了イベント
+// 謗･邯壼ｮ御ｺ・う繝吶Φ繝・
 $UD.onConnected(() => {
   console.log("[app.js] PC Sleep plugin connected to Ulanzi Studio");
 });
 
-// キー追加イベント
+// 繧ｭ繝ｼ霑ｽ蜉繧､繝吶Φ繝・
 $UD.onAdd(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action added: ${context}`);
@@ -82,7 +95,7 @@ $UD.onAdd(async (jsn) => {
   };
 });
 
-// キーアクティブ状態変更イベント
+// 繧ｭ繝ｼ繧｢繧ｯ繝・ぅ繝也憾諷句､画峩繧､繝吶Φ繝・
 $UD.onSetActive(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action SetActive: ${context}, active: ${jsn.active}`);
@@ -91,7 +104,7 @@ $UD.onSetActive(async (jsn) => {
   }
 });
 
-// キー削除イベント
+// 繧ｭ繝ｼ蜑企勁繧､繝吶Φ繝・
 $UD.onClear((jsn) => {
   if (jsn.param) {
     jsn.param.forEach(p => {
@@ -101,7 +114,7 @@ $UD.onClear((jsn) => {
   }
 });
 
-// キー押下イベント (スリープ処理)
+// 繧ｭ繝ｼ謚ｼ荳九う繝吶Φ繝・(繧ｹ繝ｪ繝ｼ繝怜・逅・
 $UD.onRun(async (jsn) => {
   const context = jsn.context;
   console.log(`[app.js] Action run (PC sleep) for context: ${context}`);
@@ -114,5 +127,6 @@ $UD.onRun(async (jsn) => {
   }
 });
 
-// Ulanzi Studio 接続開始
+// Ulanzi Studio 謗･邯夐幕蟋・
 $UD.connect('com.ulanzi.pcsleep');
+
