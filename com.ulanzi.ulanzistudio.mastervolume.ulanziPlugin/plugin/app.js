@@ -193,7 +193,6 @@ async function updateDialUI(context) {
   console.log(`[AudioControl] Updating Dial UI for ${context} (isAppMode=${config.isAppMode}): Vol=${config.currentVolume}%, Mute=${config.currentMute}, Path=${iconRelPath}, Text=${volText}`);
 
   try {
-    $UD.setFeedback({ title: volText }, context);
     $UD.setPathIcon(context, iconRelPath, volText);
   } catch (err) {
     console.error(`[AudioControl] Error updating UI:`, err);
